@@ -4,7 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Наше весілля: Павло та Світлана</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Great+Vibes&family=Lora:wght@400;500&family=Montserrat:wght@300;400;500&family=Playfair+Display:ital@0;1&family=Poiret+One&display=swap">
   <link rel="stylesheet" href="css/style.css">
+  <script src="js/themes.js"></script>
 </head>
 <body>
   <main class="landing">
@@ -13,6 +17,11 @@
     </div>
 
     <div class="landing__content">
+      <div class="switchers">
+        <nav class="themes" id="themes" aria-label="Стиль сайту"></nav>
+        <nav class="themes" id="slider-modes" aria-label="Анімація слайдера"></nav>
+      </div>
+
       <header class="intro">
         <p class="intro__subtitle">Запрошуємо на наше весілля</p>
         <h1 class="intro__title">Павло &amp; Світлана</h1>
@@ -27,7 +36,7 @@
               class="invite__input"
               id="guest-name"
               type="text"
-              placeholder="Наприклад: Пригарницький"
+              placeholder="Пригарницький"
               autocomplete="off"
               required
             >

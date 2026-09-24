@@ -100,6 +100,10 @@ function openModal(guest) {
   };
   modalVideo.src = guest.video;
 
+  // Відтворюємо зі звуком на максимальній гучності
+  modalVideo.muted = false;
+  modalVideo.volume = 1;
+
   modal.hidden = false;
   document.body.classList.add('no-scroll');
   modalVideo.play().catch(() => {});
