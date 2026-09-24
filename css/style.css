@@ -7,12 +7,14 @@
 /* ===== Теми. За замовчуванням — «Класика» ===== */
 :root {
   --bg: #fbf8f4;
+  --bg-image: none;
   --text: #3a2f2a;
   --muted: #8a7c73;
   --accent: #b5838d;
   --accent-dark: #9a6b75;
   --on-accent: #fff;
   --field-bg: #fff;
+  --field-text: var(--text);
   --field-border: #d8ccc3;
   --field-hover: #f5ece8;
   --radius: 8px;
@@ -20,12 +22,28 @@
 
   --font-body: 'Cormorant Garamond', Georgia, serif;
   --body-size: 1.125rem;
+
   --font-title: 'Cormorant Garamond', Georgia, serif;
   --title-weight: 400;
   --title-style: normal;
   --title-transform: none;
   --title-spacing: 0;
   --title-scale: 1;
+  --title-color: currentColor;        /* колір заголовка на десктопі */
+  --title-color-mobile: currentColor; /* колір заголовка поверх фото на мобільному */
+
+  --subtitle-font: var(--font-body);
+  --subtitle-style: normal;
+  --subtitle-transform: uppercase;
+  --subtitle-spacing: 0.15em;
+  --subtitle-color: var(--muted);     /* на десктопі */
+
+  --button-transform: none;
+  --button-spacing: normal;
+  --button-size: 1em;
+  --button-weight: 400;
+
+  --decor-text: none;                 /* великий декоративний напис за текстом (десктоп) */
 
   --screen: 100vh;
 }
@@ -55,76 +73,216 @@
   --title-transform: uppercase;
   --title-spacing: 0.18em;
   --title-scale: 0.72;
+
+  --button-transform: uppercase;
+  --button-spacing: 0.15em;
+  --button-size: 0.85rem;
 }
 
-/* Мерло: глибокий винний колір, тренд Pinterest 2026, фото в арці */
-:root[data-style="merlot"] {
-  --bg: #f6efeb;
-  --text: #3b1d24;
-  --muted: #8c6a70;
-  --accent: #6e2639;
-  --accent-dark: #52192a;
-  --on-accent: #f6efeb;
-  --field-border: #d9c3c3;
-  --field-hover: #f3e4e4;
-  --radius: 4px;
-  --overlay-rgb: 40, 8, 18;
+/* Молочний: молочний фон, шоколадно-коричневий, чорний і приглушене золото
+   #F5EFE3 — фон, #4A3025 — блоки/фото/другорядне, #171513 — заголовки/меню,
+   #C5A15A — кнопки, лінії, дрібні акценти */
+:root[data-style="milk"] {
+  --bg: #f5efe3;
+  --text: #171513;
+  --muted: #4a3025;
+  --accent: #c5a15a;
+  --accent-dark: #171513;
+  --on-accent: #171513;
+  --field-bg: #fbf7ef;
+  --field-border: #c5a15a;
+  --field-hover: #efe5d3;
+  --radius: 2px;
+  --overlay-rgb: 74, 48, 37;
 
-  --font-body: 'Lora', Georgia, serif;
-  --body-size: 1rem;
-  --font-title: 'Playfair Display', Georgia, serif;
+  --font-body: 'Montserrat', Arial, sans-serif;
+  --body-size: 0.95rem;
+  --font-title: 'Cormorant Garamond', Georgia, serif;
+  --title-weight: 500;
   --title-style: italic;
-  --title-scale: 0.95;
+  --title-scale: 1.1;
+  --title-color: #171513;
+  --subtitle-color: #4a3025;
+
+  --button-transform: uppercase;
+  --button-spacing: 0.15em;
+  --button-size: 0.8rem;
 }
 
-/* Олива: садова, природна; рукописний заголовок і округлі кнопки */
-:root[data-style="olive"] {
-  --bg: #f2f0e6;
-  --text: #2f3326;
-  --muted: #7a7d68;
-  --accent: #6b7446;
-  --accent-dark: #535b35;
+/* Адор (реф. ADORE, Showit): білий, розріджені великі літери з засічками,
+   золотий курсив, величезний блідий напис на фоні, чорні кнопки */
+:root[data-style="adore"] {
+  --bg: #fff;
+  --text: #1d1d1d;
+  --muted: #8f8a88;
+  --accent: #111;
+  --accent-dark: #3a3a3a;
   --on-accent: #fff;
-  --field-border: #cfcdb8;
-  --field-hover: #ebeadc;
-  --radius: 999px;
-  --overlay-rgb: 30, 36, 20;
+  --field-border: #e2dcd8;
+  --field-hover: #f9f1f1;
+  --radius: 0;
+  --overlay-rgb: 20, 20, 20;
 
-  --font-body: 'Lora', Georgia, serif;
-  --body-size: 1rem;
-  --font-title: 'Great Vibes', cursive;
-  --title-scale: 1.25;
+  --font-body: 'Montserrat', Arial, sans-serif;
+  --body-size: 0.9rem;
+  --font-title: 'Cormorant Garamond', Georgia, serif;
+  --title-weight: 500;
+  --title-transform: uppercase;
+  --title-spacing: 0.2em;
+  --title-scale: 0.75;
+
+  --subtitle-font: 'Cormorant Garamond', Georgia, serif;
+  --subtitle-style: italic;
+  --subtitle-transform: none;
+  --subtitle-spacing: 0.02em;
+  --subtitle-color: #b8975a;
+
+  --button-transform: uppercase;
+  --button-spacing: 0.22em;
+  --button-size: 0.72rem;
+
+  --decor-text: 'П & С';
 }
 
-/* Нео Деко: темний фон, золото, геометрія ар-деко */
-:root[data-style="deco"] {
-  --bg: #14161c;
-  --text: #efe6d2;
-  --muted: #a79c83;
-  --accent: #c9a45c;
-  --accent-dark: #b08b45;
-  --on-accent: #14161c;
-  --field-bg: #1d2029;
-  --field-border: #6d5d3d;
-  --field-hover: #272a35;
+/* Інтер'єр (реф. Design Interior studio): графітовий фон, великий заголовок
+   наїжджає на фото, тонкі золоті рамки, золота кнопка */
+:root[data-style="interior"] {
+  --bg: #2b2b2b;
+  --text: #e6e6e6;
+  --muted: #9a9a9a;
+  --accent: #d1a85a;
+  --accent-dark: #b8913f;
+  --on-accent: #fff;
+  --field-bg: #333;
+  --field-border: #555;
+  --field-hover: #3d3d3d;
   --radius: 0;
-  --overlay-rgb: 10, 11, 15;
+  --overlay-rgb: 20, 20, 20;
 
-  --font-body: 'Cormorant Garamond', Georgia, serif;
-  --body-size: 1.125rem;
-  --font-title: 'Poiret One', 'Montserrat', sans-serif;
+  --font-body: 'Raleway', Arial, sans-serif;
+  --body-size: 0.95rem;
+  --font-title: 'Raleway', Arial, sans-serif;
+  --title-weight: 700;
   --title-transform: uppercase;
-  --title-spacing: 0.08em;
-  --title-scale: 0.9;
+  --title-spacing: 0.01em;
+  --title-scale: 1.1;
+  --title-color: rgba(235, 235, 235, 0.88);
+
+  --subtitle-spacing: 0.35em;
+  --subtitle-color: #d1a85a;
+
+  --button-transform: uppercase;
+  --button-spacing: 0.15em;
+  --button-size: 0.75rem;
+  --button-weight: 700;
+}
+
+/* Шоколад (реф. Things That Are Brown): шоколадний фон з текстурою,
+   тонкий м'ятний заголовок, округлі бірюзові кнопки */
+:root[data-style="brown"] {
+  --bg: #3a2d29;
+  --bg-image: repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.09) 0 2px, transparent 2px 6px);
+  --text: #efe8dc;
+  --muted: #b5a898;
+  --accent: #2f6f73;
+  --accent-dark: #255a5d;
+  --on-accent: #fff;
+  --field-bg: #fdfaf5;
+  --field-text: #3a2d29;
+  --field-border: #6b5a52;
+  --field-hover: #efe6da;
+  --radius: 999px;
+  --overlay-rgb: 40, 28, 24;
+
+  --font-body: 'Nunito', Arial, sans-serif;
+  --body-size: 1rem;
+  --font-title: 'Nunito', Arial, sans-serif;
+  --title-weight: 300;
+  --title-scale: 1.05;
+  --title-color: #a8e3d6;
+  --title-color-mobile: #bdeee2;
+
+  --subtitle-spacing: 0.1em;
+
+  --button-weight: 700;
+}
+
+/* Золото (дошка Gold on Black): чорний фон, жирний золотий шрифт «фольгою»,
+   гігантський золотий амперсанд-монограма */
+:root[data-style="gold"] {
+  --bg: #0e0e0e;
+  --text: #e9e1cf;
+  --muted: #9d917a;
+  --accent: #c8a45a;
+  --accent-dark: #e0c07a;
+  --on-accent: #0e0e0e;
+  --field-bg: #161616;
+  --field-border: #4a3f2a;
+  --field-hover: #1f1c16;
+  --radius: 0;
+  --overlay-rgb: 0, 0, 0;
+
+  --font-body: 'Montserrat', Arial, sans-serif;
+  --body-size: 0.95rem;
+  --font-title: 'Montserrat', Arial, sans-serif;
+  --title-weight: 800;
+  --title-spacing: -0.02em;
+  --title-scale: 1.05;
+
+  --subtitle-spacing: 0.3em;
+  --subtitle-color: #c8a45a;
+
+  --button-transform: uppercase;
+  --button-spacing: 0.15em;
+  --button-size: 0.8rem;
+  --button-weight: 700;
+
+  --decor-text: '&';
+}
+
+/* Мармур (реф. Sweet Tooth): білий мармур, розводи золота,
+   тонкий округлий заголовок, чорна кнопка */
+:root[data-style="sweet"] {
+  --bg: #fff;
+  --bg-image:
+    linear-gradient(115deg, transparent 46%, rgba(0, 0, 0, 0.035) 47%, transparent 49%),
+    linear-gradient(160deg, transparent 60%, rgba(0, 0, 0, 0.03) 61%, transparent 63%),
+    linear-gradient(70deg, transparent 30%, rgba(0, 0, 0, 0.025) 31%, transparent 33%);
+  --text: #3b3b3b;
+  --muted: #9b9b9b;
+  --accent: #111;
+  --accent-dark: #b8914f;
+  --on-accent: #fff;
+  --field-border: #e5e0d8;
+  --field-hover: #f7f2ea;
+  --radius: 0;
+  --overlay-rgb: 30, 24, 16;
+
+  --font-body: 'Montserrat', Arial, sans-serif;
+  --body-size: 0.9rem;
+  --font-title: 'Comfortaa', Arial, sans-serif;
+  --title-weight: 300;
+  --title-spacing: 0.02em;
+  --title-scale: 1.05;
+  --title-color: #3b3b3b;
+
+  --subtitle-transform: none;
+  --subtitle-spacing: 0.05em;
+  --subtitle-color: #b8914f;
+
+  --button-transform: uppercase;
+  --button-spacing: 0.15em;
+  --button-size: 0.75rem;
 }
 
 body {
   margin: 0;
   font-family: var(--font-body);
   font-size: var(--body-size);
-  background: var(--bg);
+  background-color: var(--bg);
+  background-image: var(--bg-image);
   color: var(--text);
-  transition: background 0.4s, color 0.4s;
+  transition: background-color 0.4s, color 0.4s;
 }
 
 body.no-scroll {
@@ -293,9 +451,11 @@ body.no-scroll {
 
 .intro__subtitle {
   margin: 0;
+  font-family: var(--subtitle-font);
   font-size: 0.8rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
+  font-style: var(--subtitle-style);
+  letter-spacing: var(--subtitle-spacing);
+  text-transform: var(--subtitle-transform);
 }
 
 .intro__title {
@@ -307,6 +467,7 @@ body.no-scroll {
   text-transform: var(--title-transform);
   letter-spacing: var(--title-spacing);
   line-height: 1.15;
+  color: var(--title-color-mobile);
 }
 
 .intro__date {
@@ -334,7 +495,7 @@ body.no-scroll {
   padding: 14px 18px;
   font-family: var(--font-body);
   font-size: 16px; /* менше 16px — iOS зумить сторінку при фокусі */
-  color: var(--text);
+  color: var(--field-text);
   border: 1px solid var(--field-border);
   border-radius: var(--radius);
   background: var(--field-bg);
@@ -376,7 +537,7 @@ body.no-scroll {
   padding: 12px 18px;
   font: inherit;
   text-align: left;
-  color: var(--text);
+  color: var(--field-text);
   background: none;
   border: none;
   cursor: pointer;
@@ -390,7 +551,11 @@ body.no-scroll {
 
 .invite__button {
   padding: 14px 24px;
-  font: inherit;
+  font-family: inherit;
+  font-size: var(--button-size);
+  font-weight: var(--button-weight);
+  letter-spacing: var(--button-spacing);
+  text-transform: var(--button-transform);
   color: var(--on-accent);
   background: var(--accent);
   border: none;
@@ -403,17 +568,34 @@ body.no-scroll {
   background: var(--accent-dark);
 }
 
-:root[data-style="minimal"] .invite__button,
-:root[data-style="deco"] .invite__button {
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  font-size: 0.85rem;
-}
-
 .invite__message {
   min-height: 1.4em;
   margin: 10px 0 0;
   font-size: 0.95em;
+}
+
+/* Молочний: золота кнопка, при наведенні — чорна із золотим написом */
+:root[data-style="milk"] .invite__button:hover {
+  color: #c5a15a;
+}
+
+/* Інтер'єр: тінь під заголовком, бо він лежить на фото */
+:root[data-style="interior"] .intro__title {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.45), 0 4px 24px rgba(0, 0, 0, 0.5);
+}
+
+/* Шоколад: об'ємні кнопки, як у референсі */
+:root[data-style="brown"] .invite__button {
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+/* Золото: заголовок золотою «фольгою» */
+:root[data-style="gold"] .intro__title {
+  background: linear-gradient(100deg, #b8913f 0%, #f0d596 35%, #c8a45a 55%, #8c6b2c 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 /* ===== Landing: desktop (фото ліворуч, текст і форма праворуч) ===== */
@@ -422,6 +604,7 @@ body.no-scroll {
     display: grid;
     grid-template-columns: auto 1fr;
     height: var(--screen);
+    overflow: hidden;
     color: var(--text);
   }
 
@@ -441,6 +624,7 @@ body.no-scroll {
   }
 
   .landing__content {
+    z-index: 0; /* власний контекст: декор (::before/::after) лягає під текст */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -448,6 +632,16 @@ body.no-scroll {
     width: 100%;
     margin: 0 auto;
     padding: 48px 40px;
+  }
+
+  /* Великий декоративний напис за текстом (Адор, Золото) */
+  .landing__content::before {
+    content: var(--decor-text);
+    position: absolute;
+    z-index: -1;
+    pointer-events: none;
+    white-space: nowrap;
+    line-height: 1;
   }
 
   .switchers {
@@ -481,13 +675,14 @@ body.no-scroll {
   }
 
   .intro__subtitle {
-    color: var(--muted);
+    color: var(--subtitle-color);
     font-size: 0.9rem;
   }
 
   .intro__title {
     margin: 16px 0;
     font-size: calc(clamp(2.8rem, 4.5vw, 4.2rem) * var(--title-scale));
+    color: var(--title-color);
   }
 
   .intro__date {
@@ -529,36 +724,7 @@ body.no-scroll {
     color: var(--accent-dark);
   }
 
-  /* Мерло та Олива: фото в арці з відступом від країв */
-  :root[data-style="merlot"] .landing__media,
-  :root[data-style="olive"] .landing__media {
-    height: calc(var(--screen) - 64px);
-    margin: 32px 0 32px 32px;
-    border-radius: 999px 999px 0 0;
-  }
-
-  :root[data-style="olive"] .landing__media {
-    border-radius: 999px 999px 999px 999px / 50% 50% 50% 50%;
-  }
-
-  /* Нео Деко: подвійна золота рамка навколо тексту */
-  :root[data-style="deco"] .landing__content {
-    margin: 120px auto 40px;
-    padding: 56px 40px;
-    border: 1px solid var(--accent);
-    outline: 1px solid var(--accent);
-    outline-offset: 6px;
-  }
-
-  :root[data-style="deco"] .switchers {
-    top: -96px;
-  }
-
-  :root[data-style="deco"] .invite__message {
-    color: var(--accent);
-  }
-
-  /* Мінімал: вирівнювання по лівому краю, як у журналі */
+  /* --- Мінімал: вирівнювання по лівому краю, як у журналі --- */
   :root[data-style="minimal"] .landing__content {
     text-align: left;
   }
@@ -566,6 +732,185 @@ body.no-scroll {
   :root[data-style="minimal"] .themes {
     justify-content: flex-start;
     padding: 0 40px;
+  }
+
+  /* --- Молочний: золоті лінії обабіч дати, коричнева смуга біля фото --- */
+  :root[data-style="milk"] .intro__date {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    color: #4a3025;
+  }
+
+  :root[data-style="milk"] .intro__date::before,
+  :root[data-style="milk"] .intro__date::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #c5a15a;
+  }
+
+  /* Фото в шоколадній рамці з тонкою золотою лінією */
+  :root[data-style="milk"] .landing__media {
+    border-right: 10px solid #4a3025;
+    box-shadow: 1px 0 0 #c5a15a;
+  }
+
+  /* Меню (перемикачі) — чорні */
+  :root[data-style="milk"] .themes__button {
+    color: #171513;
+    border-color: rgba(23, 21, 19, 0.25);
+  }
+
+  :root[data-style="milk"] .themes__button[aria-pressed="true"] {
+    color: #f5efe3;
+    background: #171513;
+    border-color: #171513;
+    box-shadow: none;
+  }
+
+  /* --- Адор: блідий гігантський напис і вертикальна лінія --- */
+  :root[data-style="adore"] .landing__content::before {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -62%);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 11rem;
+    color: #f2eeec;
+  }
+
+  :root[data-style="adore"] .intro__subtitle {
+    font-size: 1.5rem;
+  }
+
+  :root[data-style="adore"] .intro__date {
+    font-size: 0.8rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+  }
+
+  :root[data-style="adore"] .intro::after {
+    content: '';
+    display: block;
+    width: 1px;
+    height: 48px;
+    margin: 28px auto 0;
+    background: #cfc8c4;
+  }
+
+  :root[data-style="adore"] .invite {
+    margin-top: 28px;
+  }
+
+  :root[data-style="adore"] .invite__message {
+    color: #b8975a;
+  }
+
+  /* --- Інтер'єр: текст по лівому краю, заголовок наїжджає на фото, золота рамка --- */
+  :root[data-style="interior"] .landing__content {
+    max-width: 620px;
+    margin: 0 auto 0 0;
+    padding-left: 72px;
+    text-align: left;
+  }
+
+  /* Напівпрозора графітова плашка + тінь, щоб текст читався на фото */
+  :root[data-style="interior"] .intro__title {
+    position: relative;
+    isolation: isolate;
+    width: fit-content;
+    margin-left: calc(-72px - 0.85em);
+    padding: 0.12em 0.3em;
+    line-height: 1;
+  }
+
+  /* Плашка окремим шаром із розмитими краями, щоб не було чіткої рамки */
+  :root[data-style="interior"] .intro__title::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: rgba(43, 43, 43, 0.6);
+    filter: blur(14px);
+  }
+
+  :root[data-style="interior"] .landing__content::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    top: 18%;
+    bottom: 18%;
+    left: 40px;
+    right: 0;
+    border: 1px solid rgba(209, 168, 90, 0.55);
+    pointer-events: none;
+  }
+
+  :root[data-style="interior"] .themes {
+    justify-content: flex-start;
+    padding-left: 72px;
+  }
+
+  :root[data-style="interior"] .intro__subtitle {
+    font-size: 0.75rem;
+  }
+
+  /* --- Шоколад: м'ятні акценти --- */
+  :root[data-style="brown"] .intro__subtitle {
+    color: #a8e3d6;
+  }
+
+  :root[data-style="brown"] .invite__message {
+    color: #a8e3d6;
+  }
+
+  /* --- Золото: гігантський амперсанд праворуч --- */
+  :root[data-style="gold"] .landing__content::before {
+    right: -0.18em;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 85vh;
+    color: rgba(200, 164, 90, 0.13);
+  }
+
+  :root[data-style="gold"] .landing__media {
+    border-right: 1px solid #c8a45a;
+  }
+
+  :root[data-style="gold"] .invite__message {
+    color: #c8a45a;
+  }
+
+  /* --- Мармур: золоті розводи в кутку і коротка лінія під заголовком --- */
+  :root[data-style="sweet"] .landing__content::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    top: -140px;
+    right: -180px;
+    width: 460px;
+    height: 460px;
+    border-radius: 43% 57% 62% 38% / 45% 38% 62% 55%;
+    background:
+      radial-gradient(ellipse at 30% 40%, rgba(214, 178, 112, 0.55), transparent 55%),
+      radial-gradient(ellipse at 70% 65%, rgba(201, 160, 90, 0.4), transparent 50%),
+      conic-gradient(from 200deg, rgba(255, 255, 255, 0), rgba(214, 178, 112, 0.35), rgba(255, 255, 255, 0) 40%, rgba(230, 200, 140, 0.3) 70%, rgba(255, 255, 255, 0));
+    filter: blur(1px);
+    pointer-events: none;
+  }
+
+  :root[data-style="sweet"] .intro__title::after {
+    content: '';
+    display: block;
+    width: 48px;
+    height: 1px;
+    margin: 20px auto 0;
+    background: #b8914f;
+  }
+
+  :root[data-style="sweet"] .intro__date {
+    color: #b8914f;
   }
 }
 

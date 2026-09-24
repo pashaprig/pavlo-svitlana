@@ -6,9 +6,17 @@
   const THEMES = [
     { id: 'classic', name: 'Класика', swatch: '#b5838d' },
     { id: 'minimal', name: 'Мінімал', swatch: '#1a1a1a' },
-    { id: 'merlot', name: 'Мерло', swatch: '#6e2639' },
-    { id: 'olive', name: 'Олива', swatch: '#6b7446' },
-    { id: 'deco', name: 'Нео Деко', swatch: '#c9a45c' },
+    {
+      id: 'milk',
+      name: 'Молочний',
+      swatch: 'conic-gradient(#f5efe3 0 25%, #c5a15a 0 50%, #171513 0 75%, #4a3025 0)',
+    },
+    // Стилі за референсами з Pinterest
+    { id: 'adore', name: 'Адор', swatch: 'conic-gradient(#fff 0 50%, #b8975a 0 75%, #111 0)' },
+    { id: 'interior', name: "Інтер'єр", swatch: 'conic-gradient(#2b2b2b 0 60%, #d1a85a 0)' },
+    { id: 'brown', name: 'Шоколад', swatch: 'conic-gradient(#3a2d29 0 50%, #a8e3d6 0 75%, #2f6f73 0)' },
+    { id: 'gold', name: 'Золото', swatch: 'conic-gradient(#0e0e0e 0 50%, #c8a45a 0)' },
+    { id: 'sweet', name: 'Мармур', swatch: 'conic-gradient(#fff 0 40%, #d6b270 0 70%, #111 0)' },
   ];
 
   function readSaved() {
