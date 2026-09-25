@@ -44,8 +44,7 @@
 
   --decor-text: none;                 /* великий декоративний напис за текстом */
 
-  --photo-divider: none;              /* лінія між двома фото */
-  --card-opacity: 55%;                /* непрозорість фону блоку з формою на десктопі */
+  --photo-divider: none;              /* лінія між двома фото */  --card-opacity: 55%;                /* непрозорість фону блоку з формою на десктопі */
 
   --screen: 100vh;
 }
@@ -110,8 +109,7 @@
   --button-spacing: 0.15em;
   --button-size: 0.8rem;
 
-  --photo-divider: 10px solid #4a3025;
-}
+  --photo-divider: 10px solid #4a3025;}
 
 /* Адор (реф. ADORE, Showit): білий, розріджені великі літери з засічками,
    золотий курсив, величезний блідий напис на фоні, чорні кнопки */
@@ -467,78 +465,8 @@ body.no-scroll {
   margin-top: 28px;
 }
 
-.invite__hint {
-  margin: 0 0 12px;
-  font-size: 0.95em;
-  color: var(--muted);
-}
-
-.invite__form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.invite__input {
-  width: 100%;
-  padding: 14px 18px;
-  font-family: var(--font-body);
-  font-size: 16px; /* менше 16px — iOS зумить сторінку при фокусі */
-  color: var(--field-text);
-  border: 1px solid var(--field-border);
-  border-radius: var(--radius);
-  background: var(--field-bg);
-}
-
-.invite__input::placeholder {
-  color: var(--muted);
-}
-
-.invite__input:focus {
-  outline: 2px solid var(--accent);
-  outline-offset: 1px;
-}
-
-/* Підказки з варіантами прізвищ */
-.invite__field {
-  position: relative;
-}
-
-.suggestions {
-  margin: 6px 0 0;
-  padding: 4px 0;
-  list-style: none;
-  text-align: left;
-  background: var(--field-bg);
-  border: 1px solid var(--field-border);
-  border-radius: min(var(--radius), 16px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
-  overflow: hidden;
-}
-
-.suggestions[hidden] {
-  display: none;
-}
-
-.suggestions__item {
-  display: block;
-  width: 100%;
-  padding: 12px 18px;
-  font: inherit;
-  text-align: left;
-  color: var(--field-text);
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
-.suggestions__item:hover,
-.suggestions__item:focus-visible {
-  background: var(--field-hover);
-  outline: none;
-}
-
 .invite__button {
+  width: 100%;
   padding: 14px 24px;
   font-family: inherit;
   font-size: var(--button-size);
@@ -555,13 +483,6 @@ body.no-scroll {
 
 .invite__button:hover {
   background: var(--accent-dark);
-}
-
-.invite__message {
-  min-height: 1.4em;
-  margin: 10px 0 0;
-  font-size: 0.95em;
-  color: var(--accent-dark);
 }
 
 /* --- Мінімал: вирівнювання по лівому краю, як у журналі --- */
@@ -622,10 +543,6 @@ body.no-scroll {
   margin-top: 28px;
 }
 
-:root[data-style="adore"] .invite__message {
-  color: #b8975a;
-}
-
 /* --- Інтер'єр: текст по лівому краю в тонкій золотій рамці --- */
 :root[data-style="interior"] .landing__content {
   text-align: left;
@@ -643,8 +560,7 @@ body.no-scroll {
 }
 
 /* --- Шоколад: м'ятні акценти, об'ємні кнопки --- */
-:root[data-style="brown"] .intro__subtitle,
-:root[data-style="brown"] .invite__message {
+:root[data-style="brown"] .intro__subtitle {
   color: #a8e3d6;
 }
 
@@ -668,10 +584,6 @@ body.no-scroll {
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 26rem;
   color: rgba(200, 164, 90, 0.13);
-}
-
-:root[data-style="gold"] .invite__message {
-  color: #c8a45a;
 }
 
 /* --- Мармур: золоті розводи в кутку і коротка лінія під заголовком --- */
@@ -723,7 +635,7 @@ body.no-scroll {
   .landing {
     align-items: center;
     justify-content: flex-end;
-    padding: 96px 32px 40px;
+    padding: 96px 32px 20px;
   }
 
   .landing__media {
@@ -736,6 +648,34 @@ body.no-scroll {
   .landing__frame {
     aspect-ratio: auto;
     height: 100%;
+  }
+
+  /* --w — ширина фото Світлани. Воно не менше за рамку (інакше порожні краї)
+     і не менше за 66,8vh — тоді фото якраз на всю висоту екрана. Тобто фото
+     рівно такого розміру, щоб закрити рамку, і обличчя не роздуваються на широких екранах.
+     Точки очей: img-2 — 48% ширини / 42% висоти, img-1 — 47% / 32%,
+     обличчя Павла в ~2,5 раза менше, тому його фото в 2,5 раза ширше */
+  .landing__media {
+    --w: max(50vw, 66.8vh);
+  }
+
+  /* Фото Світлани притиснуте до верхнього краю — якщо щось обрізається, то низ, а не голова.
+     Її очі тоді на 0,629 ширини фото від верху; фото Павла зсунуте так, щоб його очі
+     (1,147 від верху його фото) були на тій самій висоті */
+  .landing__photo {
+    top: 0;
+  }
+
+  .landing__photo--bride {
+    left: calc(48% - 0.48 * var(--w));
+    width: var(--w);
+    margin-top: 0;
+  }
+
+  .landing__photo--groom {
+    left: calc(48% - 1.175 * var(--w));
+    width: calc(2.5 * var(--w));
+    margin-top: calc((0.629 - 1.147) * var(--w));
   }
 
   /* Нижню частину екрана закриває форма, тому центр відео піднімаємо на ~30% висоти:
@@ -752,12 +692,13 @@ body.no-scroll {
     aspect-ratio: auto;
   }
 
-  /* Напівпрозорий блок: крізь нього видно фото */
+  /* Напівпрозорий блок: крізь нього видно фото. Компактний і притиснутий
+     до низу екрана, щоб не закривати обличчя */
   .landing__content {
     flex: none;
     width: 100%;
-    max-width: 560px;
-    padding: 40px 48px;
+    max-width: 420px;
+    padding: 20px 28px;
     background-color: rgba(255, 255, 255, 0.5);
     background-color: color-mix(in srgb, var(--bg) var(--card-opacity), transparent);
     border-radius: min(var(--radius), 16px);
@@ -801,42 +742,46 @@ body.no-scroll {
   }
 
   .intro__subtitle {
-    font-size: 0.9rem;
+    font-size: 0.75rem;
   }
 
   .intro__title {
-    margin: 16px 0;
-    font-size: calc(clamp(2.6rem, 3.6vw, 3.6rem) * var(--title-scale));
+    margin: 6px 0;
+    font-size: calc(2rem * var(--title-scale));
   }
 
-  .invite {
-    margin-top: 32px;
+  .intro__date {
+    font-size: 1em;
   }
 
-  .invite__form {
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-
-  .invite__field {
-    flex: 1 1 240px;
-  }
-
-  /* На десктопі підказки випадають поверх кнопки */
-  .suggestions {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    z-index: 10;
+  .invite,
+  :root[data-style="adore"] .invite {
+    margin-top: 14px;
   }
 
   .invite__button {
-    flex: 1 1 auto;
+    padding: 10px 20px;
+  }
+
+  :root[data-style="adore"] .intro__subtitle {
+    font-size: 1.1rem;
+  }
+
+  :root[data-style="adore"] .intro::after {
+    height: 20px;
+    margin-top: 12px;
+  }
+
+  :root[data-style="sweet"] .intro__title::after {
+    margin-top: 10px;
+  }
+
+  :root[data-style="gold"] .landing__decor::before {
+    font-size: 16rem;
   }
 }
 
-/* ===== Modal з вертикальним відео ===== */
+/* ===== Modal з деталями: місце, розклад, карта ===== */
 .modal {
   position: fixed;
   inset: 0;
@@ -853,67 +798,117 @@ body.no-scroll {
 .modal__backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(var(--overlay-rgb), 0.7);
 }
 
-/* Mobile: відео на весь екран */
+/* Mobile: на весь екран, прокручується */
 .modal__content {
   position: relative;
   width: 100%;
   height: var(--screen);
-  background: #000;
-  overflow: hidden;
-}
-
-.modal__video {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  background: #000;
+  overflow-y: auto;
+  padding: calc(56px + env(safe-area-inset-top)) 20px calc(32px + env(safe-area-inset-bottom));
+  text-align: center;
+  color: var(--text);
+  background-color: var(--bg);
+  background-image: var(--bg-image);
 }
 
 .modal__title {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1;
-  margin: 0;
-  padding: calc(16px + env(safe-area-inset-top)) 56px 32px 16px;
-  color: #fff;
-  font-size: 1.1rem;
-  font-weight: normal;
-  text-align: center;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0));
-  pointer-events: none;
+  margin: 8px 0 0;
+  font-family: var(--font-title);
+  font-size: calc(2rem * var(--title-scale));
+  font-weight: var(--title-weight);
+  font-style: var(--title-style);
+  text-transform: var(--title-transform);
+  letter-spacing: var(--title-spacing);
+  line-height: 1.2;
+  color: var(--title-color);
 }
 
 .modal__close {
   position: absolute;
   top: calc(8px + env(safe-area-inset-top));
   right: 8px;
-  z-index: 2;
   width: 44px;
   height: 44px;
   font-size: 2rem;
   line-height: 1;
-  color: #fff;
+  color: var(--text);
   background: none;
   border: none;
   cursor: pointer;
 }
 
-/* Desktop: вертикальне відео по висоті екрана, по центру */
+.details {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid var(--field-border);
+}
+
+.details__heading {
+  margin: 0 0 12px;
+  font-family: var(--subtitle-font);
+  font-size: 0.8rem;
+  font-weight: normal;
+  font-style: var(--subtitle-style);
+  letter-spacing: var(--subtitle-spacing);
+  text-transform: var(--subtitle-transform);
+  color: var(--subtitle-color);
+}
+
+.details__venue {
+  margin: 0;
+  font-size: 1.2em;
+}
+
+.details__address {
+  margin: 4px 0 0;
+  color: var(--muted);
+}
+
+.schedule {
+  display: inline-grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+}
+
+.schedule__time {
+  display: inline-block;
+  min-width: 3.5em;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.details__map {
+  display: block;
+  width: 100%;
+  height: 240px;
+  border: 1px solid var(--field-border);
+  border-radius: min(var(--radius), 16px);
+}
+
+.details__link {
+  display: block;
+  margin-top: 12px;
+  text-decoration: none;
+}
+
+/* Desktop: картка по центру */
 @media (min-width: 900px) {
   .modal__content {
-    width: auto;
-    height: 92vh;
-    aspect-ratio: 9 / 16;
-    border-radius: 12px;
+    width: 560px;
+    height: auto;
+    max-height: 90vh;
+    padding: 48px;
+    border-radius: min(var(--radius), 16px);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
   }
 
   .modal__title {
-    font-size: 1.25rem;
+    font-size: calc(2.6rem * var(--title-scale));
   }
 }

@@ -38,36 +38,56 @@
       </header>
 
       <section class="invite">
-        <p class="invite__hint">Введіть прізвище, щоб отримати своє запрошення</p>
-        <form class="invite__form" id="invite-form">
-          <div class="invite__field">
-            <input
-              class="invite__input"
-              id="guest-name"
-              type="text"
-              placeholder="Пригарницький"
-              autocomplete="off"
-              required
-            >
-            <ul class="suggestions" id="suggestions" hidden></ul>
-          </div>
-          <button class="invite__button" type="submit">Отримати запрошення</button>
-        </form>
-        <p class="invite__message" id="invite-message" aria-live="polite"></p>
+        <button class="invite__button" id="invite-button" type="button">Отримати запрошення</button>
       </section>
     </div>
   </main>
 
-  <div class="modal" id="video-modal" hidden>
+  <!-- Деталі весілля. Назву ресторану, адресу і розклад змінюйте тут.
+       Карта будується за адресою з src/href нижче — там теж замініть адресу. -->
+  <div class="modal" id="details-modal" hidden>
     <div class="modal__backdrop" data-close></div>
     <div class="modal__content" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-      <h2 class="modal__title" id="modal-title"></h2>
       <button class="modal__close" type="button" aria-label="Закрити" data-close>&times;</button>
-      <video class="modal__video" id="modal-video" controls playsinline></video>
+
+      <p class="intro__subtitle">Чекаємо на вас</p>
+      <h2 class="modal__title" id="modal-title">23 жовтня 2026</h2>
+
+      <section class="details">
+        <h3 class="details__heading">Місце</h3>
+        <p class="details__venue">Ресторан «Назва ресторану»</p>
+        <p class="details__address">вул. Адреса, 1, Місто</p>
+      </section>
+
+      <section class="details">
+        <h3 class="details__heading">Розклад</h3>
+        <ol class="schedule">
+          <li class="schedule__item"><time class="schedule__time">15:30</time> Збір гостей</li>
+          <li class="schedule__item"><time class="schedule__time">16:00</time> Церемонія</li>
+          <li class="schedule__item"><time class="schedule__time">17:00</time> Святкова вечеря</li>
+          <li class="schedule__item"><time class="schedule__time">23:00</time> Завершення вечора</li>
+        </ol>
+      </section>
+
+      <section class="details">
+        <h3 class="details__heading">На карті</h3>
+        <iframe
+          class="details__map"
+          title="Ресторан на Google Картах"
+          src="https://www.google.com/maps?q=вул.+Адреса,+1,+Місто&output=embed"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+        ></iframe>
+        <a
+          class="invite__button details__link"
+          href="https://www.google.com/maps/search/?api=1&query=вул.+Адреса,+1,+Місто"
+          target="_blank"
+          rel="noopener"
+        >Відкрити в Google Картах</a>
+      </section>
     </div>
   </div>
 
-  <script src="js/guests.js"></script>
   <script src="js/script.js"></script>
 </body>
 </html>
