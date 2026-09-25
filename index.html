@@ -9,18 +9,27 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Montserrat:wght@300;400;500;700;800&family=Nunito:wght@300;400;700&family=Raleway:wght@400;700&display=swap">
   <link rel="stylesheet" href="css/style.css">
   <script src="js/themes.js"></script>
+  <script src="js/background.js"></script>
 </head>
 <body>
   <main class="landing">
-    <div class="landing__media slider" id="slider">
-      <div class="slider__dots" id="slider-dots"></div>
+    <div class="landing__media">
+      <div class="landing__frame">
+        <img class="landing__photo landing__photo--groom" src="assets/images/img-1.jpeg" alt="Павло в дитинстві">
+      </div>
+      <div class="landing__frame">
+        <img class="landing__photo landing__photo--bride" src="assets/images/img-2.jpeg" alt="Світлана в дитинстві">
+      </div>
+      <video class="landing__video" id="bg-video" src="assets/videos/promo.mp4" muted loop playsinline preload="none"></video>
+    </div>
+
+    <div class="switchers">
+      <nav class="themes" id="themes" aria-label="Стиль сайту"></nav>
+      <nav class="themes" id="bg-modes" aria-label="Фон"></nav>
     </div>
 
     <div class="landing__content">
-      <div class="switchers">
-        <nav class="themes" id="themes" aria-label="Стиль сайту"></nav>
-        <nav class="themes" id="slider-modes" aria-label="Анімація слайдера"></nav>
-      </div>
+      <div class="landing__decor" aria-hidden="true"></div>
 
       <header class="intro">
         <p class="intro__subtitle">Запрошуємо на наше весілля</p>
@@ -58,7 +67,6 @@
     </div>
   </div>
 
-  <script src="js/slider.js"></script>
   <script src="js/guests.js"></script>
   <script src="js/script.js"></script>
 </body>
