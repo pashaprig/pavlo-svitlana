@@ -340,6 +340,28 @@ body.no-scroll {
   margin-top: -66%;
 }
 
+/* Спільне фото для мобільного (9:16). Низ трохи обрізаємо — там лише одяг,
+   верх лишаємо, щоб не різати квіти й голови. На десктопі — два окремі фото */
+.landing__mobile-photo {
+  display: none;
+  grid-column: 1 / -1;
+  width: 100%;
+  height: auto; /* інакше атрибут height="1600" задасть висоту в пікселях */
+  aspect-ratio: 9 / 14;
+  object-fit: cover;
+  object-position: top;
+}
+
+@media (max-width: 899px) {
+  .landing__frame {
+    display: none;
+  }
+
+  :root:not([data-bg="video"]) .landing__mobile-photo {
+    display: block;
+  }
+}
+
 /* Режим «Відео»: одне відео замість двох фото */
 .landing__video {
   display: none;
