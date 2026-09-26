@@ -6,10 +6,8 @@
   <title>Наше весілля: Павло та Світлана</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Montserrat:wght@300;400;500;700;800&family=Nunito:wght@300;400;700&family=Raleway:wght@400;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap">
   <link rel="stylesheet" href="css/style.css">
-  <script src="js/themes.js"></script>
-  <script src="js/background.js"></script>
 </head>
 <body>
   <main class="landing">
@@ -21,17 +19,9 @@
         <img class="landing__photo landing__photo--bride" src="assets/images/img-2.jpeg" width="1632" height="2444" alt="Світлана в дитинстві">
       </div>
       <img class="landing__mobile-photo" src="assets/images/mobile.jpeg" width="900" height="1600" alt="Павло і Світлана в дитинстві">
-      <video class="landing__video" id="bg-video" src="assets/videos/promo.mp4" muted loop playsinline preload="none"></video>
-    </div>
-
-    <div class="switchers">
-      <nav class="themes" id="themes" aria-label="Стиль сайту"></nav>
-      <nav class="themes" id="bg-modes" aria-label="Фон"></nav>
     </div>
 
     <div class="landing__content">
-      <div class="landing__decor" aria-hidden="true"></div>
-
       <header class="intro">
         <p class="intro__subtitle">Запрошуємо на наше весілля</p>
         <h1 class="intro__title">Павло &amp; Світлана</h1>
@@ -44,8 +34,33 @@
     </div>
   </main>
 
-  <!-- Деталі весілля. Назву ресторану, адресу і розклад змінюйте тут.
-       Карта будується за адресою з src/href нижче — там теж замініть адресу. -->
+  <div class="modal" id="about-modal" hidden>
+    <div class="modal__backdrop" data-close></div>
+    <div class="modal__content" role="dialog" aria-modal="true" aria-labelledby="about-title">
+      <button class="modal__close" type="button" aria-label="Закрити" data-close>&times;</button>
+
+      <p class="intro__subtitle">Про свято</p>
+      <h2 class="modal__title" id="about-title">Павло &amp; Світлана</h2>
+
+      <section class="details">
+        <h3 class="details__heading">Опис</h3>
+        <p class="details__text">Тут буде кілька слів про наше свято: чому ми збираємо вас разом і яким хочемо бачити цей день.</p>
+      </section>
+
+      <section class="details">
+        <h3 class="details__heading">Тематика</h3>
+        <p class="details__text">Опис тематики та кольорів свята.</p>
+      </section>
+
+      <section class="details">
+        <h3 class="details__heading">Деталі</h3>
+        <p class="details__text">Дрес-код, побажання щодо подарунків та інші важливі моменти.</p>
+      </section>
+
+      <button class="invite__button modal__next" type="button" data-next="details-modal">Далі</button>
+    </div>
+  </div>
+
   <div class="modal" id="details-modal" hidden>
     <div class="modal__backdrop" data-close></div>
     <div class="modal__content" role="dialog" aria-modal="true" aria-labelledby="modal-title">
@@ -63,22 +78,22 @@
       <section class="details">
         <h3 class="details__heading">Розклад</h3>
         <ol class="schedule">
-          <li class="schedule__item"><time class="schedule__time">15:30</time> Збір гостей</li>
-          <li class="schedule__item"><time class="schedule__time">16:00</time> Церемонія</li>
-          <li class="schedule__item"><time class="schedule__time">17:00</time> Святкова вечеря</li>
-          <li class="schedule__item"><time class="schedule__time">23:00</time> Завершення вечора</li>
+          <li class="schedule__item"><span class="schedule__time">15:30–16:00</span> Церемонія</li>
+          <li class="schedule__item"><span class="schedule__time">17:00–23:00</span> Святкова вечеря</li>
         </ol>
       </section>
 
       <section class="details">
         <h3 class="details__heading">На карті</h3>
-        <iframe
-          class="details__map"
-          title="Ресторан на Google Картах"
-          src="https://www.google.com/maps?q=50.4501,30.5234&z=14&output=embed"
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"
-        ></iframe>
+        <div class="details__map-box" id="map-box">
+          <iframe
+            class="details__map"
+            title="Ресторан на Google Картах"
+            src="https://www.google.com/maps?q=50.4501,30.5234&z=14&output=embed"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
         <a
           class="invite__button details__link"
           href="https://www.google.com/maps/search/?api=1&query=50.4501,30.5234"
