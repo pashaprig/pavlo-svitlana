@@ -6,7 +6,7 @@
   <title>Наше весілля: Павло та Світлана</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marck+Script&family=Montserrat:wght@300;400;700&display=swap">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -18,14 +18,14 @@
       <div class="landing__frame">
         <img class="landing__photo landing__photo--bride" src="assets/images/img-2.jpeg" width="1632" height="2444" alt="Світлана в дитинстві">
       </div>
-      <img class="landing__mobile-photo" src="assets/images/mobile.jpeg" width="900" height="1600" alt="Павло і Світлана в дитинстві">
+      <img class="landing__mobile-photo" src="assets/images/mobile.jpg" width="900" height="1600" alt="Павло і Світлана в дитинстві">
     </div>
 
     <div class="landing__content">
       <header class="intro">
-        <p class="intro__subtitle">Запрошуємо на наше весілля</p>
+        <p class="details__text">Запрошуємо на наше весілля</p>
         <h1 class="intro__title">Павло &amp; Світлана</h1>
-        <p class="intro__date">23 жовтня 2026 · 15:30</p>
+        <p class="details__text">23 жовтня 2026 · 15:30</p>
       </header>
 
       <section class="invite">
@@ -39,22 +39,49 @@
     <div class="modal__content" role="dialog" aria-modal="true" aria-labelledby="about-title">
       <button class="modal__close" type="button" aria-label="Закрити" data-close>&times;</button>
 
-      <p class="intro__subtitle">Про свято</p>
-      <h2 class="modal__title" id="about-title">Павло &amp; Світлана</h2>
+      <h2 class="intro__title" id="about-title">Павло &amp; Світлана</h2>
 
       <section class="details">
-        <h3 class="details__heading">Опис</h3>
-        <p class="details__text">Тут буде кілька слів про наше свято: чому ми збираємо вас разом і яким хочемо бачити цей день.</p>
+        <h3 class="details__lead">Київ найкраще пам’ятає історії, які починалися з любові.</h3>
+        <p class="details__text">Серед старих вулиць, каштанів, бань тисячолітніх соборів та брам княжої доби три роки тому іскра запалила два серця. Так доля поєднала двох подарованих одне одному людей. Наша історія стала прикладом того, як кохання перемагає найважчі виклики, що всесвіт може підготувати закоханим. Ми хочемо, щоб одна з найважливіших сторінок ціієї історії була написана разом із вами.</p>
       </section>
 
       <section class="details">
-        <h3 class="details__heading">Тематика</h3>
-        <p class="details__text">Опис тематики та кольорів свята.</p>
+        <h3 class="details__lead">23 жовтня 2026 року ми одружуємося.</h3>
+        <p class="details__text">Без зайвого галасу й великих церемоній. Натомість — із найближчими людьми, красивим Києвом навколо, вечерею, келихами на столі та розмовами, які ми запам’ятаємо на все життя.</p>
       </section>
 
       <section class="details">
-        <h3 class="details__heading">Деталі</h3>
-        <p class="details__text">Дрес-код, побажання щодо подарунків та інші важливі моменти.</p>
+        <h3 class="details__lead">Почнемо з головного</h3>
+        <p class="details__text">О 15:30 ми скажемо одне одному «так».</p>
+        <p class="details__text">Новий ЗАГС (Берестейський проспект, 42)</p>
+        <div class="details__map-box">
+          <iframe
+            class="details__map"
+            title="Новий ЗАГС на Google Картах"
+            src="https://www.google.com/maps?q=50.4540079,30.4515429&z=16&output=embed"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+        <p class="details__text">Просимо приїхати до 15:15, щоб нікуди не поспішати й прожити цей момент разом із нами від самого початку.</p>
+      </section>
+
+      <section class="details">
+        <p class="details__text">А далі — вечеря</p>
+        <p class="details__text">Після церемонії ми вирушимо туди, де й має продовжуватися хороший київський вечір, — за великий стіл.</p>
+        <p class="details__text">О 17:00 зустрічаємося у</p>
+        <p class="details__text">[назва ресторану](адреса ресторану)</p>
+        <div class="details__map-box">
+          <iframe
+            class="details__map"
+            title="Ресторан на Google Картах"
+            src="https://www.google.com/maps?q=50.4501,30.5234&z=14&output=embed"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+        <p class="details__text">Забарвимо цей вечір настроєм молодої київської інтелігенції. Красиве вбрання, свічки та келихи на столі, смачна їжа, неквапливі розмови, тости, сміх і музика. І головне — люди, заради яких хочеться накривати цей стіл.</p>
       </section>
 
       <button class="invite__button modal__next" type="button" data-next="details-modal">Далі</button>
@@ -66,41 +93,57 @@
     <div class="modal__content" role="dialog" aria-modal="true" aria-labelledby="modal-title">
       <button class="modal__close" type="button" aria-label="Закрити" data-close>&times;</button>
 
-      <p class="intro__subtitle">Чекаємо на вас</p>
-      <h2 class="modal__title" id="modal-title">23 жовтня 2026</h2>
+      <p class="details__text">Чекаємо на вас</p>
+      <h2 class="intro__title" id="modal-title">23 жовтня 2026</h2>
 
       <section class="details">
-        <h3 class="details__heading">Місце</h3>
-        <p class="details__venue">Ресторан «Назва ресторану»</p>
-        <p class="details__address">вул. Адреса, 1, Місто</p>
-      </section>
-
-      <section class="details">
-        <h3 class="details__heading">Розклад</h3>
+        <h3 class="details__lead">Хроніка нашого вечора</h3>
         <ol class="schedule">
-          <li class="schedule__item"><span class="schedule__time">15:30–16:00</span> Церемонія</li>
-          <li class="schedule__item"><span class="schedule__time">17:00–23:00</span> Святкова вечеря</li>
+          <li class="schedule__item details__text"><span>15:15</span> <span>збираємося</span></li>
+          <li class="schedule__item details__text"><span>15:30</span> <span>церемонія та наше «так»</span></li>
+          <li class="schedule__item details__text"><span>17:00</span> <span>зустрічаємося за вечерею</span></li>
+          <li class="schedule__item details__text"><span>17:00–22:00</span> <span>їмо, говоримо, сміємося, піднімаємо келихи й створюємо нові сімейні історії</span></li>
         </ol>
       </section>
 
       <section class="details">
-        <h3 class="details__heading">На карті</h3>
-        <div class="details__map-box" id="map-box">
-          <iframe
-            class="details__map"
-            title="Ресторан на Google Картах"
-            src="https://www.google.com/maps?q=50.4501,30.5234&z=14&output=embed"
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-          ></iframe>
-        </div>
-        <a
-          class="invite__button details__link"
-          href="https://www.google.com/maps/search/?api=1&query=50.4501,30.5234"
-          target="_blank"
-          rel="noopener"
-        >Відкрити в Google Картах</a>
+        <h3 class="details__lead">Вечірнє вбрання</h3>
+        <p class="details__text">Цей вечір потребує трохи краси. Тож будемо раді бачити вас у вечірньому вбранні / Black Tie Optional. Жодних обмежень у кольорах. Нехай це буде той самий привід дістати особливу сукню, костюм чи прикраси й дозволити собі бути трішки святковішими, ніж зазвичай.</p>
       </section>
+
+      <section class="details">
+        <h3 class="details__lead">Про квіти й вино</h3>
+        <p class="details__text">Ми любимо квіти, тому букет буде прекрасним подарунком і точно нас потішить. Але якщо замість квітів вам захочеться принести щось із довшою історією — оберіть пляшку хорошого вина чи іншого улюбленого алкоголю. Ми відкриємо вашу пляшку на річницю весілля, згадаємо цей день і скажемо: «А це нам подарували на весілля…» Тоді наше свято ніколи не закінчиться — це спогади, які ми приховаємо під корок та вивільнимо в особливі хвилини щастя.</p>
+        <p class="details__text">Якщо маєте побажання щодо меню або є щось, про що нам варто знати, — залиште це у формі.</p>
+        <!-- Замініть ENTRY_ID на номер поля з попередньо заповненого посилання Google Форми -->
+        <form
+          class="details__form"
+          id="wish-form"
+          action="https://docs.google.com/forms/d/e/1FAIpQLSfZYIefDay0n4bE43D5_DaYBntcpPiM1X6DoroM4lheDNaiPA/formResponse"
+          method="POST"
+        >
+          <textarea
+            class="details__field"
+            name="entry.ENTRY_ID"
+            rows="4"
+            required
+            placeholder="Ваші побажання…"
+            aria-label="Побажання щодо меню або те, що нам варто знати"
+          ></textarea>
+          <button class="invite__button" type="submit">Надіслати</button>
+          <p class="details__text" id="wish-status" aria-live="polite" hidden></p>
+        </form>
+      </section>
+
+      <section class="details">
+        <p class="details__text">І наостанок</p>
+        <p class="details__text">Ми не знаємо, які історії про Київ розповідатимуть через багато років. Але точно знаємо, що 23 жовтня 2026 року в ньому станеться одна дуже важлива для нас подія.</p>
+        <p class="details__text">Ми станемо сім’єю.</p>
+        <p class="details__text">До зустрічі. За нашим столом. У нашій історії. 🤍</p>
+        <p class="details__text">Павло та Світлана</p>
+      </section>
+
+      <button class="invite__button modal__next" type="button" data-next="about-modal">Назад</button>
     </div>
   </div>
 

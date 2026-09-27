@@ -1,9 +1,33 @@
 const inviteButton = document.getElementById('invite-button');
 const modals = document.querySelectorAll('.modal');
-const mapBox = document.getElementById('map-box');
+const mapBoxes = document.querySelectorAll('.details__map-box');
+const wishForm = document.getElementById('wish-form');
+const wishStatus = document.getElementById('wish-status');
 let openedModal = null;
 
-mapBox.querySelector('iframe').addEventListener('load', () => mapBox.classList.add('is-loaded'));
+wishForm.addEventListener('submit', (event) => {
+  event.preventDefault();
+  const submitButton = wishForm.querySelector('[type="submit"]');
+  submitButton.disabled = true;
+
+  // Google Форма не віддає відповідь на інший домен, тому no-cors
+  fetch(wishForm.action, { method: 'POST', mode: 'no-cors', body: new FormData(wishForm) })
+    .then(() => {
+      wishForm.reset();
+      wishStatus.textContent = 'Дякуємо! Ми отримали ваше повідомлення 🤍';
+    })
+    .catch(() => {
+      wishStatus.textContent = 'Не вдалося надіслати. Спробуйте ще раз.';
+    })
+    .finally(() => {
+      wishStatus.hidden = false;
+      submitButton.disabled = false;
+    });
+});
+
+mapBoxes.forEach((mapBox) => {
+  mapBox.querySelector('iframe').addEventListener('load', () => mapBox.classList.add('is-loaded'));
+});
 
 function openModal(modal) {
   if (openedModal) openedModal.hidden = true;
