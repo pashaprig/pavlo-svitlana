@@ -6,7 +6,7 @@
   <title>Наше весілля: Павло та Світлана</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marck+Script&family=Montserrat:wght@300;400;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -48,12 +48,6 @@
         <button class="invite__button" id="invite-button" type="button" disabled>Тут подробиці</button>
       </section>
     </div>
-
-    <button class="scroll-hint" id="scroll-hint" type="button" aria-label="Гортайте донизу">
-      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
-        <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </button>
   </main>
 
   <div class="modal" id="about-modal" hidden>
@@ -61,11 +55,11 @@
     <div class="modal__content" role="dialog" aria-modal="true" aria-labelledby="about-title">
       <button class="modal__close" type="button" aria-label="Закрити" data-close>&times;</button>
 
-      <h2 class="intro__title" id="about-title">Павло &amp; Світлана</h2>
+      <h2 class="intro__title" id="about-title" data-guest-names>Павло &amp; Світлана</h2>
 
       <section class="details">
         <h3 class="details__lead">Київ найкраще пам’ятає історії, які починалися з любові.</h3>
-        <p class="details__text">Серед старих вулиць, каштанів, бань тисячолітніх соборів та брам княжої доби три роки тому іскра запалила два серця. Так доля поєднала двох подарованих одне одному людей. Наша історія стала прикладом того, як кохання перемагає найважчі виклики, що всесвіт може підготувати закоханим. Ми хочемо, щоб одна з найважливіших сторінок ціієї історії була написана разом із <span data-guest-word="вами|тобою">вами</span>, <span data-guest-names></span>.</p>
+        <p class="details__text">Серед старих вулиць, каштанів, бань тисячолітніх соборів та брам княжої доби три роки тому іскра запалила два серця. Так доля поєднала двох подарованих одне одному людей. Наша історія стала прикладом того, як кохання перемагає найважчі виклики, що всесвіт може підготувати закоханим. Ми хочемо, щоб одна з найважливіших сторінок ціієї історії була написана разом із <span data-guest-word="вами|тобою">вами</span>.</p>
       </section>
 
       <section class="details">
@@ -135,25 +129,6 @@
       <section class="details">
         <h3 class="details__lead">Про квіти й вино</h3>
         <p class="details__text">Ми любимо квіти, тому букет буде прекрасним подарунком і точно нас потішить. Але якщо замість квітів вам захочеться принести щось із довшою історією — оберіть пляшку хорошого вина чи іншого улюбленого алкоголю. Ми відкриємо вашу пляшку на річницю весілля, згадаємо цей день і скажемо: «А це нам подарували на весілля…» Тоді наше свято ніколи не закінчиться — це спогади, які ми приховаємо під корок та вивільнимо в особливі хвилини щастя.</p>
-        <p class="details__text"><span data-guest-names></span>, якщо <span data-guest-word="маєте|маєш">маєте</span> побажання щодо меню або є щось, про що нам варто знати, — <span data-guest-word="залиште|залиш">залиште</span> це у формі.</p>
-        <form
-          class="details__form"
-          id="wish-form"
-          action="https://docs.google.com/forms/d/e/1FAIpQLSfZYIefDay0n4bE43D5_DaYBntcpPiM1X6DoroM4lheDNaiPA/formResponse"
-          method="POST"
-        >
-          <textarea
-            class="details__field"
-            name="entry.1098234013"
-            rows="4"
-            required
-            placeholder="Ваші побажання…"
-            data-guest-placeholder="Ваші побажання…|Твої побажання…"
-            aria-label="Побажання щодо меню або те, що нам варто знати"
-          ></textarea>
-          <button class="invite__button" type="submit">Надіслати</button>
-          <p class="details__text" id="wish-status" aria-live="polite" hidden></p>
-        </form>
       </section>
 
       <section class="details">

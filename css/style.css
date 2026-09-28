@@ -4,30 +4,14 @@
   box-sizing: border-box;
 }
 
-@font-face {
-  font-family: 'Calligraphia Two';
-  src: local('Calligraphia Two'), local('CalligraphiaTwo'),
-    url('../assets/fonts/CalligraphiaTwo.woff2') format('woff2'),
-    url('../assets/fonts/CalligraphiaTwo.woff') format('woff'),
-    url('../assets/fonts/CalligraphiaTwo.ttf') format('truetype'),
-    url('../assets/fonts/CalligraphiaTwo.otf') format('opentype');
-  font-display: swap;
-}
-
 :root {
-  /* Палітра з пастельного букета */
-  --bg: #f7f3ee;          /* кремові півонії */
-  --mist: #d3dcdc;        /* сіро-блакитний фон фото */
-  --text: #4b5068;        /* глибокий сизий */
-  --muted: #8a7f9e;       /* приглушений бузок */
-  --accent: #9fb1dd;      /* блакитний антуріум */
-  --pink: #efc3c8;        /* рожевий ранункулюс */
-  --lilac: #d8b0dc;       /* орхідея */
-  --butter: #f1cf6e;      /* жовта кала */
-  --sage: #a9b98c;        /* стебла */
+  --bg: #f5f0e4;
+  --text: #936237;
+  --muted: #a97c55;
+  --accent: #936237;
   --radius: 2px;
 
-  --font-script: 'Calligraphia Two', 'Marck Script', cursive;
+  --font: 'Great Vibes', cursive;
 
   --screen: 100vh;
 
@@ -38,14 +22,12 @@
 
 body {
   margin: 0;
-  font-family: 'Montserrat', Arial, sans-serif;
-  font-size: 0.95rem;
+  font-family: var(--font);
+  font-size: 1.35rem;
   background-color: var(--bg);
   background-image:
-    radial-gradient(circle at 0% 0%, rgba(159, 177, 221, 0.35), transparent 45%),
-    radial-gradient(circle at 100% 30%, rgba(239, 195, 200, 0.35), transparent 45%),
-    radial-gradient(circle at 20% 100%, rgba(241, 207, 110, 0.25), transparent 45%),
-    radial-gradient(circle at 90% 95%, rgba(216, 176, 220, 0.35), transparent 45%);
+    radial-gradient(circle at 0% 0%, rgba(147, 98, 55, 0.12), transparent 45%),
+    radial-gradient(circle at 100% 100%, rgba(147, 98, 55, 0.12), transparent 45%);
   background-attachment: fixed;
   color: var(--text);
 
@@ -64,11 +46,11 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--accent);
+  background: var(--muted);
   border-radius: 3px;
 
   &:hover {
-    background: var(--muted);
+    background: var(--accent);
   }
 }
 
@@ -80,11 +62,12 @@ body {
 @supports not selector(::-webkit-scrollbar) {
   * {
     scrollbar-width: thin;
-    scrollbar-color: var(--accent) var(--bg);
+    scrollbar-color: var(--muted) var(--bg);
   }
 }
 
 .landing {
+  position: relative;
   min-height: var(--screen);
   display: flex;
   flex-direction: column;
@@ -159,48 +142,51 @@ body {
   display: none;
   grid-column: 1 / -1;
   width: 100%;
-  height: auto;
-  aspect-ratio: 9 / 14;
+  height: var(--screen);
   object-fit: cover;
   object-position: top;
 
   @media (max-width: 899px) {
     display: block;
-    margin-top: -60px;
   }
 }
 
 .landing__content {
-  flex: 1;
-  padding: 24px 20px calc(32px + env(safe-area-inset-bottom));
+  position: absolute;
+  right: 16px;
+  bottom: calc(16px + env(safe-area-inset-bottom));
+  left: 16px;
+  z-index: 1;
+  padding: 20px;
   text-align: center;
+  background-color: rgba(245, 240, 228, 0.55);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  border-radius: 12px;
+  box-shadow: 0 16px 48px rgba(147, 98, 55, 0.25);
 
   @media (min-width: 900px) {
     position: relative;
-    z-index: 1;
-    flex: none;
+    inset: auto;
     width: 100%;
     max-width: 420px;
-    padding: 20px;
-    background-color: rgba(247, 243, 238, 0.7);
-    -webkit-backdrop-filter: blur(6px);
-    backdrop-filter: blur(6px);
-    border-radius: 12px;
-    box-shadow: 0 16px 48px rgba(75, 80, 104, 0.2);
   }
 }
 
 .intro__title {
   margin: 0;
-  font-family: var(--font-script);
-  font-size: clamp(2.6rem, 12vw, 3.6rem);
+  font-size: 2.8rem;
   font-weight: normal;
-      font-size: 2.2rem;
   line-height: 1.1;
-  color: #7f93c9;
 
   @media (min-width: 900px) {
-    font-size: 2.4rem;
+    font-size: 3rem;
+  }
+}
+
+.intro {
+  @media (max-width: 899px) {
+    display: none;
   }
 }
 
@@ -210,7 +196,7 @@ body {
 
 .details__text {
   margin: 0;
-  line-height: 1.6;
+  line-height: 1.5;
   text-align: justify;
 
   & + & {
@@ -220,20 +206,13 @@ body {
 
 .details__lead {
   margin: 0 0 8px;
-  font-family: var(--font-script);
-  font-size: 1.7rem;
+  font-size: 2rem;
   font-weight: normal;
   line-height: 1.2;
   color: var(--muted);
-
-  .details__text + & {
-    margin-top: 10px;
-  }
 }
 
 .invite {
-  margin-top: 28px;
-
   @media (min-width: 900px) {
     margin-top: 14px;
   }
@@ -241,25 +220,20 @@ body {
 
 .invite__button {
   width: 100%;
-  padding: 14px 24px;
+  padding: 10px 24px;
   font-family: inherit;
-  font-size: 0.8rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: #fff;
-  background: linear-gradient(100deg, var(--accent), var(--lilac) 55%, var(--pink));
-  background-size: 200% 100%;
-  background-position: 0 0;
+  font-size: 1.5rem;
+  color: var(--bg);
+  background-color: var(--accent);
   border: none;
   border-radius: 999px;
-  box-shadow: 0 6px 18px rgba(159, 177, 221, 0.45);
-  text-shadow: 0 1px 2px rgba(75, 80, 104, 0.25);
+  box-shadow: 0 6px 18px rgba(147, 98, 55, 0.35);
   cursor: pointer;
-  transition: background-position 0.4s, box-shadow 0.2s;
+  transition: background-color 0.3s, box-shadow 0.2s;
 
   &:hover:not(:disabled) {
-    background-position: 100% 0;
-    box-shadow: 0 8px 22px rgba(216, 176, 220, 0.55);
+    background-color: var(--muted);
+    box-shadow: 0 8px 22px rgba(147, 98, 55, 0.45);
   }
 
   &:disabled {
@@ -269,7 +243,7 @@ body {
   }
 
   @media (min-width: 900px) {
-    padding: 10px 20px;
+    padding: 6px 20px;
   }
 }
 
@@ -283,7 +257,7 @@ body {
   border-radius: 999px;
 
   @media (min-width: 900px) {
-    padding: 10px 16px;
+    padding: 8px 16px;
   }
 }
 
@@ -312,20 +286,20 @@ body {
   &:checked {
     border-color: transparent;
     background:
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-7' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 70% no-repeat,
-      linear-gradient(100deg, var(--accent), var(--lilac) 55%, var(--pink));
-    box-shadow: 0 4px 12px rgba(159, 177, 221, 0.45);
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-7' fill='none' stroke='%23f5f0e4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 70% no-repeat,
+      var(--accent);
+    box-shadow: 0 4px 12px rgba(147, 98, 55, 0.35);
   }
 
   &:focus-visible {
     outline: none;
-    box-shadow: 0 0 0 3px rgba(216, 176, 220, 0.35);
+    box-shadow: 0 0 0 3px rgba(147, 98, 55, 0.3);
   }
 }
 
 .guest__suggestions {
   position: absolute;
-  top: calc(100% + 6px);
+  bottom: calc(100% + 6px);
   left: 0;
   right: 0;
   z-index: 2;
@@ -335,16 +309,12 @@ body {
   background-color: var(--bg);
   border: 1px solid var(--accent);
   border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(75, 80, 104, 0.2);
-
-  &[hidden] {
-    display: none;
-  }
+  box-shadow: 0 8px 24px rgba(147, 98, 55, 0.25);
 }
 
 .guest__suggestion {
   width: 100%;
-  padding: 10px 12px;
+  padding: 8px 12px;
   font: inherit;
   color: inherit;
   background: none;
@@ -355,7 +325,7 @@ body {
   &:hover,
   &:focus-visible {
     outline: none;
-    background-color: rgba(216, 176, 220, 0.3);
+    background-color: rgba(147, 98, 55, 0.12);
   }
 }
 
@@ -375,7 +345,7 @@ body {
 .modal__backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(75, 80, 104, 0.55);
+  background: rgba(147, 98, 55, 0.45);
   -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
 }
@@ -389,9 +359,8 @@ body {
   text-align: center;
   background-color: var(--bg);
   background-image:
-    radial-gradient(circle at 0% 0%, rgba(159, 177, 221, 0.3), transparent 40%),
-    radial-gradient(circle at 100% 0%, rgba(239, 195, 200, 0.3), transparent 40%),
-    radial-gradient(circle at 50% 100%, rgba(216, 176, 220, 0.25), transparent 50%);
+    radial-gradient(circle at 0% 0%, rgba(147, 98, 55, 0.1), transparent 40%),
+    radial-gradient(circle at 100% 100%, rgba(147, 98, 55, 0.1), transparent 45%);
 
   @media (min-width: 900px) {
     width: 70%;
@@ -399,7 +368,7 @@ body {
     max-height: 90vh;
     padding: 48px;
     border-radius: 16px;
-    box-shadow: 0 16px 48px rgba(75, 80, 104, 0.3);
+    box-shadow: 0 16px 48px rgba(147, 98, 55, 0.3);
   }
 }
 
@@ -409,6 +378,7 @@ body {
   right: 8px;
   width: 44px;
   height: 44px;
+  font-family: var(--font);
   font-size: 2rem;
   line-height: 1;
   color: var(--text);
@@ -425,7 +395,7 @@ body {
   margin-top: 16px;
   padding-top: 14px;
   border-top: 1px solid transparent;
-  border-image: linear-gradient(90deg, transparent, var(--accent), var(--lilac), var(--pink), var(--butter), transparent) 1;
+  border-image: linear-gradient(90deg, transparent, var(--accent), transparent) 1;
 }
 
 .schedule {
@@ -437,7 +407,7 @@ body {
 
 .schedule__item {
   display: grid;
-  grid-template-columns: 7.5em 1fr;
+  grid-template-columns: 5.5em 1fr;
   gap: 8px;
 }
 
@@ -457,7 +427,7 @@ body {
     width: 32px;
     height: 32px;
     margin: -16px 0 0 -16px;
-    border: 2px solid rgba(159, 177, 221, 0.3);
+    border: 2px solid rgba(147, 98, 55, 0.25);
     border-top-color: var(--accent);
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
@@ -482,22 +452,15 @@ body {
   }
 }
 
-.details__form {
-  display: grid;
-  gap: 12px;
-  margin-top: 16px;
-}
-
 .details__field {
   width: 100%;
-  padding: 14px 8px;
+  padding: 10px 8px;
   font: inherit;
   color: inherit;
   background-color: rgba(255, 255, 255, 0.6);
   border: 1px solid var(--accent);
   border-radius: 12px;
-  resize: vertical;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: box-shadow 0.2s;
 
   &::placeholder {
     color: var(--muted);
@@ -505,36 +468,31 @@ body {
 
   &:focus {
     outline: none;
-    border-color: var(--lilac);
-    box-shadow: 0 0 0 3px rgba(216, 176, 220, 0.35);
+    box-shadow: 0 0 0 3px rgba(147, 98, 55, 0.3);
   }
 }
 
-/* Сторінка PDF-запрошення (формат A5) */
 .pdf-page {
-  --milk: #fbf6ec;
-
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 18px;
+  gap: 16px;
   width: 559px;
   min-height: 793px;
   padding: 56px 52px;
-  font-family: 'Montserrat', Arial, sans-serif;
-  font-size: 13px;
+  font-family: var(--font);
+  font-size: 19px;
   text-align: center;
   color: var(--text);
-  background-color: var(--milk);
-  /* молочна вуаль поверх шпалер, щоб текст читався */
-  background-image:
-    radial-gradient(ellipse at center, rgba(251, 246, 236, 0.85) 30%, rgba(251, 246, 236, 0.35) 75%),
-    url('../assets/images/wallpaper.jpg');
-  background-size: cover;
-  background-position: center;
-  position: relative;
+  background-color: var(--bg);
+  background-image: url('../assets/images/pdf.png');
+  background-size: 100% 100%;
+}
 
-  /* тонка рамка по краю */
+.pdf-page--plain {
+  position: relative;
+  background-image: none;
+
   &::before {
     content: '';
     position: absolute;
@@ -544,50 +502,40 @@ body {
   }
 }
 
-.pdf-page--plain {
-  background-image: none;
-}
-
 .pdf-page__subtitle {
   margin: 0;
-  font-size: 10px;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
+  font-size: 22px;
   color: var(--muted);
 }
 
 .pdf-page__title {
   margin: 0;
-  font-family: var(--font-script);
-  font-size: 44px;
+  font-size: 52px;
   font-weight: normal;
   line-height: 1.1;
-  color: #7f93c9;
 }
 
-.pdf-page__greeting {
-  margin: 0;
-  font-size: 15px;
-  font-weight: 700;
+.pdf-page__block,
+.pdf-page__signature {
+  align-self: flex-end;
+  width: 58%;
 }
 
 .pdf-page__block {
-  width: 100%;
-  padding-top: 14px;
-  border-top: 1px solid rgba(159, 177, 221, 0.6);
+  padding-top: 12px;
+  border-top: 1px solid rgba(147, 98, 55, 0.5);
 }
 
 .pdf-page__block-title {
-  margin: 0 0 6px;
-  font-family: var(--font-script);
-  font-size: 24px;
+  margin: 0 0 4px;
+  font-size: 30px;
   font-weight: normal;
   color: var(--muted);
 }
 
 .pdf-page__text {
   margin: 0;
-  line-height: 1.6;
+  line-height: 1.4;
 
   & + & {
     margin-top: 4px;
@@ -596,55 +544,10 @@ body {
 
 .pdf-page__signature {
   margin: auto 0 0;
-  font-family: var(--font-script);
-  font-size: 20px;
-  line-height: 1.4;
+  font-size: 26px;
+  line-height: 1.3;
   white-space: pre-line;
   color: var(--muted);
-}
-
-/* Підказка «гортайте донизу» — лише на мобільному, де контент під фото */
-.scroll-hint {
-  position: fixed;
-  right: 16px;
-  bottom: calc(100px + env(safe-area-inset-bottom));
-  z-index: 10;
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  padding: 0;
-  color: #fff;
-  background: linear-gradient(100deg, var(--accent), var(--lilac) 55%, var(--pink));
-  border: none;
-  border-radius: 50%;
-  box-shadow: 0 6px 18px rgba(159, 177, 221, 0.45);
-  cursor: pointer;
-  animation: hint-bounce 1.8s ease-in-out infinite;
-  transition: opacity 0.3s, visibility 0.3s;
-
-  &.is-hidden {
-    opacity: 0;
-    visibility: hidden;
-  }
-
-  @media (min-width: 900px) {
-    display: none;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    animation: none;
-  }
-}
-
-@keyframes hint-bounce {
-  0%, 100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(8px);
-  }
 }
 
 @keyframes spin {

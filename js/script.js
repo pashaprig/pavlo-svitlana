@@ -1,12 +1,27 @@
-// Список гостей: partner — id другої половинки або null
 const GUESTS = [
-  { id: 1, lastName: 'Пригарницький', firstName: 'Павло', partner: 2 },
-  { id: 2, lastName: 'Ященко', firstName: 'Світлана', partner: 1 },
-  { id: 3, lastName: 'Башкін', firstName: 'Ігор', partner: null },
+  { id: 1, lastName: 'Сайчук', firstName: 'Лєна', gender: 'f', partner: null },
+  { id: 2, lastName: 'Барська', firstName: 'Настя', gender: 'f', partner: 3 },
+  { id: 3, lastName: 'Шульга', firstName: 'Руслан', gender: 'm', partner: 2 },
+  { id: 4, lastName: 'Васильєва', firstName: 'Оля', gender: 'f', partner: 5 },
+  { id: 5, lastName: 'Васильєв', firstName: 'Антон', gender: 'm', partner: 4 },
+  { id: 6, lastName: 'Фіканюк', firstName: 'Софія', gender: 'f', partner: 7 },
+  { id: 7, lastName: 'Фіканюк', firstName: 'Андрій', gender: 'm', partner: 6 },
+  { id: 8, lastName: 'Беверакі', firstName: 'Оля', gender: 'f', partner: 9 },
+  { id: 9, lastName: 'Беверакі', firstName: 'Діма', gender: 'm', partner: 8 },
+  { id: 10, lastName: 'Петришин', firstName: 'Аня', gender: 'f', partner: 11 },
+  { id: 11, lastName: 'Петришин', firstName: 'Діма', gender: 'm', partner: 10 },
+  { id: 12, lastName: 'Стреляний', firstName: 'Вітя', gender: 'm', partner: 13 },
+  { id: 13, lastName: 'Соловйова', firstName: 'Юля', gender: 'f', partner: 12 },
+  { id: 14, lastName: 'Башкін', firstName: 'Ігор', gender: 'm', partner: null },
+  { id: 15, lastName: 'Підопригора', firstName: 'Сергій', gender: 'm', partner: null },
+  { id: 16, lastName: 'Ткаченко', firstName: 'Настя', gender: 'f', partner: 17 },
+  { id: 17, lastName: 'Ткаченко', firstName: 'Денис', gender: 'm', partner: 16 },
+  { id: 18, lastName: 'Черненко', firstName: 'Стас', gender: 'm', partner: 19 },
+  { id: 19, lastName: 'Стаса', firstName: 'Таня', gender: 'f', partner: 18 },
+  { id: 20, lastName: 'Горбачевська', firstName: 'Лєра', gender: 'f', partner: null },
 ];
 const MIN_MATCH = 4;
 const STORAGE_KEY = 'guestIds';
-// Спершу локальна копія, якщо її немає — CDN
 const HTML2PDF_URLS = [
   'js/vendor/html2pdf.bundle.min.js',
   'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js',
@@ -18,8 +33,6 @@ const guestSuggestions = document.getElementById('guest-suggestions');
 const coupleCheckbox = document.getElementById('guest-couple');
 const modals = document.querySelectorAll('.modal');
 const mapBoxes = document.querySelectorAll('.details__map-box');
-const wishForm = document.getElementById('wish-form');
-const wishStatus = document.getElementById('wish-status');
 const downloadButton = document.getElementById('download-button');
 let openedModal = null;
 let selectedGuest = null;
@@ -28,7 +41,6 @@ const normalize = (text) => text.trim().toLowerCase().replace(/[’ʼ`]/g, "'");
 const fullName = (guest) => `${guest.lastName} ${guest.firstName}`;
 const findGuest = (id) => GUESTS.find((guest) => guest.id === id) || null;
 
-// Гість + його пара, якщо відмічено «нас двоє»
 function guestGroup(guest) {
   const partner = coupleCheckbox.checked ? findGuest(guest.partner) : null;
   return partner ? [guest, partner] : [guest];
@@ -58,15 +70,10 @@ function renderSelectedGuests() {
     el.textContent = firstNames;
   });
 
-  // data-guest-word="для пари|для одного": вами/тобою, маєте/маєш…
   const isSingle = selectedGuests().length === 1;
   document.querySelectorAll('[data-guest-word]').forEach((el) => {
     const [plural, single] = el.dataset.guestWord.split('|');
     el.textContent = isSingle ? single : plural;
-  });
-  document.querySelectorAll('[data-guest-placeholder]').forEach((el) => {
-    const [plural, single] = el.dataset.guestPlaceholder.split('|');
-    el.placeholder = isSingle ? single : plural;
   });
   saveGuests();
 }
@@ -115,16 +122,6 @@ if (savedGuest) {
   selectGuest(savedGuest);
 }
 
-// Підказка «гортайте донизу» ховається, щойно користувач почав гортати
-const scrollHint = document.getElementById('scroll-hint');
-const updateScrollHint = () => scrollHint.classList.toggle('is-hidden', window.scrollY > 40);
-window.addEventListener('scroll', updateScrollHint, { passive: true });
-updateScrollHint();
-scrollHint.addEventListener('click', () => {
-  window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
-});
-
-// Бібліотеку для PDF вантажимо лише при першому натисканні
 function loadScript(src) {
   return new Promise((resolve, reject) => {
     const script = document.createElement('script');
@@ -155,16 +152,21 @@ function createElement(tag, className, text) {
   return el;
 }
 
-// Сторінка PDF будується з тексту в js/invitation-text.js
 function buildInvitationPage() {
-  const names = selectedGuests().map((guest) => guest.firstName).join(' та ');
-  const fill = (text) => text.replaceAll('{names}', names);
+  const guests = selectedGuests();
+  const names = guests.map((guest) => guest.firstName).join(' та ');
+  const variant = guests.length > 1 ? 0 : guests[0].gender === 'f' ? 2 : 1;
+  const fill = (text) => text
+    .replaceAll('{names}', names)
+    .replace(/\{([^{}]*\|[^{}]*)\}/g, (_, options) => {
+      const [pair, male, female = male] = options.split('|');
+      return [pair, male, female][variant];
+    });
   const page = createElement('div', 'pdf-page');
 
   page.append(
     createElement('p', 'pdf-page__subtitle', INVITATION_PDF.subtitle),
-    createElement('h1', 'pdf-page__title', INVITATION_PDF.title),
-    createElement('p', 'pdf-page__greeting', fill(INVITATION_PDF.greeting)),
+    createElement('h1', 'pdf-page__title', fill(INVITATION_PDF.title)),
   );
 
   INVITATION_PDF.blocks.forEach((block) => {
@@ -188,7 +190,7 @@ downloadButton.addEventListener('click', async () => {
       filename: INVITATION_PDF.fileName,
       margin: 0,
       image: { type: 'jpeg', quality: 0.95 },
-      html2canvas: { scale: 2, backgroundColor: '#fbf6ec' },
+      html2canvas: { scale: 2, backgroundColor: '#f5f0e4' },
       jsPDF: { unit: 'mm', format: 'a5', orientation: 'portrait' },
     })
     .from(page)
@@ -199,8 +201,7 @@ downloadButton.addEventListener('click', async () => {
     try {
       await savePdf(buildInvitationPage());
     } catch (error) {
-      // Сторінка відкрита як файл (file://) — браузер не дає вставити шпалери, робимо без них
-      console.warn('PDF зі шпалерами не вдався, пробуємо без фону', error);
+      console.warn('PDF з фоном не вдався, пробуємо без нього', error);
       const page = buildInvitationPage();
       page.classList.add('pdf-page--plain');
       await savePdf(page);
@@ -212,32 +213,6 @@ downloadButton.addEventListener('click', async () => {
     downloadButton.disabled = false;
     downloadButton.textContent = label;
   }
-});
-
-wishForm.addEventListener('submit', (event) => {
-  event.preventDefault();
-  const submitButton = wishForm.querySelector('[type="submit"]');
-  submitButton.disabled = true;
-
-  // Перед побажанням — повні імена гостей, щоб у відповідях було видно, від кого
-  const formData = new FormData(wishForm);
-  const wishField = wishForm.querySelector('textarea');
-  const guestNames = selectedGuest ? selectedGuests().map(fullName).join(' та ') : 'Невідомий гість';
-  formData.set(wishField.name, `${guestNames}: ${wishField.value}`);
-
-  // Google Форма не віддає відповідь на інший домен, тому no-cors
-  fetch(wishForm.action, { method: 'POST', mode: 'no-cors', body: formData })
-    .then(() => {
-      wishForm.reset();
-      wishStatus.textContent = 'Дякуємо! Ми отримали ваше повідомлення 🤍';
-    })
-    .catch(() => {
-      wishStatus.textContent = 'Не вдалося надіслати. Спробуйте ще раз.';
-    })
-    .finally(() => {
-      wishStatus.hidden = false;
-      submitButton.disabled = false;
-    });
 });
 
 mapBoxes.forEach((mapBox) => {
