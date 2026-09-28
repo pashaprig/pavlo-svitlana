@@ -166,7 +166,7 @@ body {
 
   @media (max-width: 899px) {
     display: block;
-    margin-top: -100px;
+    margin-top: -60px;
   }
 }
 
@@ -181,7 +181,7 @@ body {
     flex: none;
     width: 100%;
     max-width: 420px;
-    padding: 20px 28px;
+    padding: 20px;
     background-color: rgba(247, 243, 238, 0.7);
     -webkit-backdrop-filter: blur(6px);
     backdrop-filter: blur(6px);
@@ -191,7 +191,7 @@ body {
 }
 
 .intro__title {
-  margin: 4px 0 8px;
+  margin: 0;
   font-family: var(--font-script);
   font-size: clamp(2.6rem, 12vw, 3.6rem);
   font-weight: normal;
@@ -200,7 +200,6 @@ body {
   color: #7f93c9;
 
   @media (min-width: 900px) {
-    margin: 2px 0 6px;
     font-size: 2.4rem;
   }
 }
@@ -258,13 +257,105 @@ body {
   cursor: pointer;
   transition: background-position 0.4s, box-shadow 0.2s;
 
-  &:hover {
+  &:hover:not(:disabled) {
     background-position: 100% 0;
     box-shadow: 0 8px 22px rgba(216, 176, 220, 0.55);
   }
 
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+
   @media (min-width: 900px) {
     padding: 10px 20px;
+  }
+}
+
+.guest {
+  position: relative;
+  margin-bottom: 12px;
+}
+
+.guest__input {
+  text-align: center;
+  border-radius: 999px;
+
+  @media (min-width: 900px) {
+    padding: 10px 16px;
+  }
+}
+
+.guest__couple {
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.guest__checkbox {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  margin: 0;
+  appearance: none;
+  background-color: rgba(255, 255, 255, 0.6);
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+
+  &:checked {
+    border-color: transparent;
+    background:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-7' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 70% no-repeat,
+      linear-gradient(100deg, var(--accent), var(--lilac) 55%, var(--pink));
+    box-shadow: 0 4px 12px rgba(159, 177, 221, 0.45);
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(216, 176, 220, 0.35);
+  }
+}
+
+.guest__suggestions {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 2;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  background-color: var(--bg);
+  border: 1px solid var(--accent);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(75, 80, 104, 0.2);
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+.guest__suggestion {
+  width: 100%;
+  padding: 10px 12px;
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+
+  &:hover,
+  &:focus-visible {
+    outline: none;
+    background-color: rgba(216, 176, 220, 0.3);
   }
 }
 
@@ -399,7 +490,7 @@ body {
 
 .details__field {
   width: 100%;
-  padding: 14px 16px;
+  padding: 14px 8px;
   font: inherit;
   color: inherit;
   background-color: rgba(255, 255, 255, 0.6);
@@ -416,6 +507,143 @@ body {
     outline: none;
     border-color: var(--lilac);
     box-shadow: 0 0 0 3px rgba(216, 176, 220, 0.35);
+  }
+}
+
+/* Сторінка PDF-запрошення (формат A5) */
+.pdf-page {
+  --milk: #fbf6ec;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  width: 559px;
+  min-height: 793px;
+  padding: 56px 52px;
+  font-family: 'Montserrat', Arial, sans-serif;
+  font-size: 13px;
+  text-align: center;
+  color: var(--text);
+  background-color: var(--milk);
+  /* молочна вуаль поверх шпалер, щоб текст читався */
+  background-image:
+    radial-gradient(ellipse at center, rgba(251, 246, 236, 0.85) 30%, rgba(251, 246, 236, 0.35) 75%),
+    url('../assets/images/wallpaper.jpg');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+
+  /* тонка рамка по краю */
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 14px;
+    border: 1px solid var(--accent);
+    pointer-events: none;
+  }
+}
+
+.pdf-page--plain {
+  background-image: none;
+}
+
+.pdf-page__subtitle {
+  margin: 0;
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.pdf-page__title {
+  margin: 0;
+  font-family: var(--font-script);
+  font-size: 44px;
+  font-weight: normal;
+  line-height: 1.1;
+  color: #7f93c9;
+}
+
+.pdf-page__greeting {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.pdf-page__block {
+  width: 100%;
+  padding-top: 14px;
+  border-top: 1px solid rgba(159, 177, 221, 0.6);
+}
+
+.pdf-page__block-title {
+  margin: 0 0 6px;
+  font-family: var(--font-script);
+  font-size: 24px;
+  font-weight: normal;
+  color: var(--muted);
+}
+
+.pdf-page__text {
+  margin: 0;
+  line-height: 1.6;
+
+  & + & {
+    margin-top: 4px;
+  }
+}
+
+.pdf-page__signature {
+  margin: auto 0 0;
+  font-family: var(--font-script);
+  font-size: 20px;
+  line-height: 1.4;
+  white-space: pre-line;
+  color: var(--muted);
+}
+
+/* Підказка «гортайте донизу» — лише на мобільному, де контент під фото */
+.scroll-hint {
+  position: fixed;
+  right: 16px;
+  bottom: calc(100px + env(safe-area-inset-bottom));
+  z-index: 10;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  color: #fff;
+  background: linear-gradient(100deg, var(--accent), var(--lilac) 55%, var(--pink));
+  border: none;
+  border-radius: 50%;
+  box-shadow: 0 6px 18px rgba(159, 177, 221, 0.45);
+  cursor: pointer;
+  animation: hint-bounce 1.8s ease-in-out infinite;
+  transition: opacity 0.3s, visibility 0.3s;
+
+  &.is-hidden {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  @media (min-width: 900px) {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+@keyframes hint-bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(8px);
   }
 }
 

@@ -13,12 +13,12 @@
   <main class="landing">
     <div class="landing__media">
       <div class="landing__frame">
-        <img class="landing__photo landing__photo--groom" src="assets/images/img-1.jpeg" width="1898" height="2722" alt="Павло в дитинстві">
+        <img class="landing__photo landing__photo--groom" src="assets/images/img-1.webp" width="1898" height="2722" alt="Павло в дитинстві">
       </div>
       <div class="landing__frame">
-        <img class="landing__photo landing__photo--bride" src="assets/images/img-2.jpeg" width="1632" height="2444" alt="Світлана в дитинстві">
+        <img class="landing__photo landing__photo--bride" src="assets/images/img-2.webp" width="1632" height="2444" alt="Світлана в дитинстві">
       </div>
-      <img class="landing__mobile-photo" src="assets/images/mobile.jpg" width="900" height="1600" alt="Павло і Світлана в дитинстві">
+      <img class="landing__mobile-photo" src="assets/images/mobile.webp" width="1047" height="1501" alt="Павло і Світлана в дитинстві">
     </div>
 
     <div class="landing__content">
@@ -29,9 +29,31 @@
       </header>
 
       <section class="invite">
-        <button class="invite__button" id="invite-button" type="button">Отримати запрошення</button>
+        <div class="guest">
+          <input
+            class="details__field guest__input"
+            id="guest-input"
+            type="text"
+            autocomplete="off"
+            placeholder="Ваше прізвище"
+            aria-label="Ваше прізвище"
+            aria-controls="guest-suggestions"
+          >
+          <ul class="guest__suggestions" id="guest-suggestions" hidden></ul>
+        </div>
+        <label class="guest__couple">
+          <input class="guest__checkbox" id="guest-couple" type="checkbox">
+          нас двоє
+        </label>
+        <button class="invite__button" id="invite-button" type="button" disabled>Тут подробиці</button>
       </section>
     </div>
+
+    <button class="scroll-hint" id="scroll-hint" type="button" aria-label="Гортайте донизу">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+        <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
   </main>
 
   <div class="modal" id="about-modal" hidden>
@@ -43,7 +65,7 @@
 
       <section class="details">
         <h3 class="details__lead">Київ найкраще пам’ятає історії, які починалися з любові.</h3>
-        <p class="details__text">Серед старих вулиць, каштанів, бань тисячолітніх соборів та брам княжої доби три роки тому іскра запалила два серця. Так доля поєднала двох подарованих одне одному людей. Наша історія стала прикладом того, як кохання перемагає найважчі виклики, що всесвіт може підготувати закоханим. Ми хочемо, щоб одна з найважливіших сторінок ціієї історії була написана разом із вами.</p>
+        <p class="details__text">Серед старих вулиць, каштанів, бань тисячолітніх соборів та брам княжої доби три роки тому іскра запалила два серця. Так доля поєднала двох подарованих одне одному людей. Наша історія стала прикладом того, як кохання перемагає найважчі виклики, що всесвіт може підготувати закоханим. Ми хочемо, щоб одна з найважливіших сторінок ціієї історії була написана разом із <span data-guest-word="вами|тобою">вами</span>, <span data-guest-names></span>.</p>
       </section>
 
       <section class="details">
@@ -84,7 +106,7 @@
         <p class="details__text">Забарвимо цей вечір настроєм молодої київської інтелігенції. Красиве вбрання, свічки та келихи на столі, смачна їжа, неквапливі розмови, тости, сміх і музика. І головне — люди, заради яких хочеться накривати цей стіл.</p>
       </section>
 
-      <button class="invite__button modal__next" type="button" data-next="details-modal">Далі</button>
+      <button class="invite__button modal__next" type="button" data-next="details-modal">Дізнатись деталі</button>
     </div>
   </div>
 
@@ -93,7 +115,6 @@
     <div class="modal__content" role="dialog" aria-modal="true" aria-labelledby="modal-title">
       <button class="modal__close" type="button" aria-label="Закрити" data-close>&times;</button>
 
-      <p class="details__text">Чекаємо на вас</p>
       <h2 class="intro__title" id="modal-title">23 жовтня 2026</h2>
 
       <section class="details">
@@ -114,8 +135,7 @@
       <section class="details">
         <h3 class="details__lead">Про квіти й вино</h3>
         <p class="details__text">Ми любимо квіти, тому букет буде прекрасним подарунком і точно нас потішить. Але якщо замість квітів вам захочеться принести щось із довшою історією — оберіть пляшку хорошого вина чи іншого улюбленого алкоголю. Ми відкриємо вашу пляшку на річницю весілля, згадаємо цей день і скажемо: «А це нам подарували на весілля…» Тоді наше свято ніколи не закінчиться — це спогади, які ми приховаємо під корок та вивільнимо в особливі хвилини щастя.</p>
-        <p class="details__text">Якщо маєте побажання щодо меню або є щось, про що нам варто знати, — залиште це у формі.</p>
-        <!-- Замініть ENTRY_ID на номер поля з попередньо заповненого посилання Google Форми -->
+        <p class="details__text"><span data-guest-names></span>, якщо <span data-guest-word="маєте|маєш">маєте</span> побажання щодо меню або є щось, про що нам варто знати, — <span data-guest-word="залиште|залиш">залиште</span> це у формі.</p>
         <form
           class="details__form"
           id="wish-form"
@@ -124,10 +144,11 @@
         >
           <textarea
             class="details__field"
-            name="entry.ENTRY_ID"
+            name="entry.1098234013"
             rows="4"
             required
             placeholder="Ваші побажання…"
+            data-guest-placeholder="Ваші побажання…|Твої побажання…"
             aria-label="Побажання щодо меню або те, що нам варто знати"
           ></textarea>
           <button class="invite__button" type="submit">Надіслати</button>
@@ -143,10 +164,11 @@
         <p class="details__text">Павло та Світлана</p>
       </section>
 
-      <button class="invite__button modal__next" type="button" data-next="about-modal">Назад</button>
+      <button class="invite__button modal__next" id="download-button" type="button">Завантажити запрошення</button>
     </div>
   </div>
 
+  <script src="js/invitation-text.js"></script>
   <script src="js/script.js"></script>
 </body>
 </html>
