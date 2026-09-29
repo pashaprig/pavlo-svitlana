@@ -11,7 +11,7 @@
   --accent: #ce9489;
   --radius: 2px;
 
-  --font: 'Montserrat', sans-serif;
+  --font: 'Comfortaa', sans-serif;
   --font-pdf: 'Great Vibes', cursive;
 
   --screen: 100vh;
@@ -357,6 +357,7 @@ body {
 
   @media (min-width: 900px) {
     width: 70%;
+    max-width: 768px;
     height: auto;
     max-height: 90vh;
     padding: 48px;

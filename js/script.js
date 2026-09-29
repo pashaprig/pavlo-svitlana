@@ -25,10 +25,9 @@ const GUESTS = [
 const MIN_MATCH = 4;
 const PDF_MIN_FONT_SIZE = 12;
 const STORAGE_KEY = 'guestIds';
-const HTML2PDF_URLS = [
-  'js/vendor/html2pdf.bundle.min.js',
-  'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js',
-];
+const HTML2PDF_URL = 'js/vendor/html2pdf.bundle.min.js';
+// шрифт PDF підвантажуємо лише під час створення запрошення, щоб не гальмувати сторінку
+const PDF_FONT_URL = 'https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap';
 
 const inviteButton = document.getElementById('invite-button');
 const guestInput = document.getElementById('guest-input');
@@ -137,27 +136,27 @@ if (savedGuest) {
   selectGuest(savedGuest);
 }
 
-function loadScript(src) {
+function loadResource(tag, attrs) {
   return new Promise((resolve, reject) => {
-    const script = document.createElement('script');
-    script.src = src;
-    script.onload = resolve;
-    script.onerror = () => {
-      script.remove();
-      reject();
+    const el = Object.assign(document.createElement(tag), attrs);
+    el.onload = resolve;
+    el.onerror = () => {
+      el.remove();
+      reject(new Error(`Не завантажився ${attrs.src || attrs.href}`));
     };
-    document.head.append(script);
+    document.head.append(el);
   });
 }
 
-async function loadHtml2pdf() {
-  for (const url of HTML2PDF_URLS) {
-    if (window.html2pdf) return;
-    try {
-      await loadScript(url);
-    } catch {}
+const loadHtml2pdf = () => window.html2pdf ? Promise.resolve() : loadResource('script', { src: HTML2PDF_URL });
+
+let pdfFontLoaded = false;
+async function loadPdfFont() {
+  if (!pdfFontLoaded) {
+    await loadResource('link', { rel: 'stylesheet', href: PDF_FONT_URL });
+    pdfFontLoaded = true;
   }
-  if (!window.html2pdf) throw new Error('html2pdf не завантажився');
+  await document.fonts.load('20px "Great Vibes"', 'Світлана');
 }
 
 function createElement(tag, className, text) {
@@ -253,7 +252,7 @@ downloadButton.addEventListener('click', async () => {
   let label = DOWNLOAD_LABEL;
 
   try {
-    await Promise.all([loadHtml2pdf(), document.fonts.load('20px "Great Vibes"', 'Світлана')]);
+    await Promise.all([loadHtml2pdf(), loadPdfFont()]);
     if (isIOS && navigator.canShare) {
       const blob = await createPdf((worker) => worker.outputPdf('blob'));
       const file = new File([blob], INVITATION_PDF.fileName, { type: 'application/pdf' });
