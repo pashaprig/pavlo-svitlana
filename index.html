@@ -6,7 +6,7 @@
   <title>Наше весілля: Павло та Світлана</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat&family=Cormorant+Garamond&family=Playfair+Display&family=Lora&family=Comfortaa&family=Caveat&display=swap">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -22,6 +22,16 @@
     </div>
 
     <div class="landing__content">
+      <div class="fonts" role="group" aria-label="Шрифт">
+        <button class="fonts__button" type="button" data-font="'Montserrat', sans-serif" data-scale="1" style="font-family: 'Montserrat', sans-serif">Montserrat</button>
+        <button class="fonts__button" type="button" data-font="'Cormorant Garamond', serif" data-scale="1.2" style="font-family: 'Cormorant Garamond', serif">Cormorant</button>
+        <button class="fonts__button" type="button" data-font="'Playfair Display', serif" data-scale="1.05" style="font-family: 'Playfair Display', serif">Playfair</button>
+        <button class="fonts__button" type="button" data-font="'Lora', serif" data-scale="1.05" style="font-family: 'Lora', serif">Lora</button>
+        <button class="fonts__button" type="button" data-font="'Comfortaa', sans-serif" data-scale="1" style="font-family: 'Comfortaa', sans-serif">Comfortaa</button>
+        <button class="fonts__button" type="button" data-font="'Caveat', cursive" data-scale="1.35" style="font-family: 'Caveat', cursive">Caveat</button>
+        <button class="fonts__button" type="button" data-font="'Great Vibes', cursive" data-scale="1.35" style="font-family: 'Great Vibes', cursive">Great Vibes</button>
+      </div>
+
       <header class="intro">
         <p class="details__text">Запрошуємо на наше весілля</p>
         <h1 class="intro__title">Павло &amp; Світлана</h1>
@@ -75,7 +85,7 @@
           <iframe
             class="details__map"
             title="Новий ЗАГС на Google Картах"
-            src="https://www.google.com/maps?q=50.4540079,30.4515429&z=16&output=embed"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2540.3069916470354!2d30.446671988515156!3d50.45400779834725!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40d4cd003992676f%3A0x9207257e5ea251c6!2z0J3QvtCy0LjQuSDQl9Cw0LPRgSDQptC10L3RgtGA0LDQu9GM0L3QuNC5!5e0!3m2!1suk!2sus!4v1790663527331!5m2!1suk!2sus"
             loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"
           ></iframe>
@@ -86,13 +96,13 @@
       <section class="details">
         <p class="details__text">А далі — вечеря</p>
         <p class="details__text">Після церемонії ми вирушимо туди, де й має продовжуватися хороший київський вечір, — за великий стіл.</p>
-        <p class="details__text">О 17:00 зустрічаємося у</p>
-        <p class="details__text">[назва ресторану](адреса ресторану)</p>
+        <p class="details__text">О 17:00 зустрічаємося у ресторані.</p>
+        <p class="details__text">Селям (вул. Сагайдачного Петра, 35)</p>
         <div class="details__map-box">
           <iframe
             class="details__map"
-            title="Ресторан на Google Картах"
-            src="https://www.google.com/maps?q=50.4501,30.5234&z=14&output=embed"
+            title="Ресторан Селям на Google Картах"
+            src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2135.8007294330773!2d30.520692024138093!3d50.46141133614361!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40d4cff081f38e83%3A0x80fa0807525cd3f4!2z0KHQtdC70Y_QvA!5e0!3m2!1suk!2sus!4v1790663487182!5m2!1suk!2sus"
             loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"
           ></iframe>
@@ -109,34 +119,24 @@
     <div class="modal__content" role="dialog" aria-modal="true" aria-labelledby="modal-title">
       <button class="modal__close" type="button" aria-label="Закрити" data-close>&times;</button>
 
-      <h2 class="intro__title" id="modal-title">23 жовтня 2026</h2>
-
-      <section class="details">
-        <h3 class="details__lead">Хроніка нашого вечора</h3>
-        <ol class="schedule">
-          <li class="schedule__item details__text"><span>15:15</span> <span>збираємося</span></li>
-          <li class="schedule__item details__text"><span>15:30</span> <span>церемонія та наше «так»</span></li>
-          <li class="schedule__item details__text"><span>17:00</span> <span>зустрічаємося за вечерею</span></li>
-          <li class="schedule__item details__text"><span>17:00–22:00</span> <span>їмо, говоримо, сміємося, піднімаємо келихи й створюємо нові сімейні історії</span></li>
-        </ol>
-      </section>
+      <h2 class="intro__title" id="modal-title">Деталі</h2>
 
       <section class="details">
         <h3 class="details__lead">Вечірнє вбрання</h3>
-        <p class="details__text">Цей вечір потребує трохи краси. Тож будемо раді бачити вас у вечірньому вбранні / Black Tie Optional. Жодних обмежень у кольорах. Нехай це буде той самий привід дістати особливу сукню, костюм чи прикраси й дозволити собі бути трішки святковішими, ніж зазвичай.</p>
+        <p class="details__text">Цей вечір потребує трохи краси. Тож будемо раді бачити <span data-guest-word="вас|тебе">вас</span> у вечірньому вбранні / Black Tie Optional. Жодних обмежень у кольорах. Нехай це буде той самий привід дістати особливу сукню, костюм чи прикраси й дозволити собі бути трішки святковішими, ніж зазвичай.</p>
       </section>
 
       <section class="details">
         <h3 class="details__lead">Про квіти й вино</h3>
-        <p class="details__text">Ми любимо квіти, тому букет буде прекрасним подарунком і точно нас потішить. Але якщо замість квітів вам захочеться принести щось із довшою історією — оберіть пляшку хорошого вина чи іншого улюбленого алкоголю. Ми відкриємо вашу пляшку на річницю весілля, згадаємо цей день і скажемо: «А це нам подарували на весілля…» Тоді наше свято ніколи не закінчиться — це спогади, які ми приховаємо під корок та вивільнимо в особливі хвилини щастя.</p>
+        <p class="details__text">Ми любимо квіти, тому букет буде прекрасним подарунком і точно нас потішить. Але якщо замість квітів <span data-guest-word="вам|тобі">вам</span> захочеться принести щось із довшою історією — <span data-guest-word="оберіть|обери">оберіть</span> пляшку хорошого вина чи іншого улюбленого алкоголю. Ми відкриємо <span data-guest-word="вашу|твою">вашу</span> пляшку на річницю весілля, згадаємо цей день і скажемо: «А це нам подарували на весілля…» Тоді наше свято ніколи не закінчиться — це спогади, які ми приховаємо під корок та вивільнимо в особливі хвилини щастя.</p>
       </section>
 
       <section class="details">
         <p class="details__text">І наостанок</p>
         <p class="details__text">Ми не знаємо, які історії про Київ розповідатимуть через багато років. Але точно знаємо, що 23 жовтня 2026 року в ньому станеться одна дуже важлива для нас подія.</p>
         <p class="details__text">Ми станемо сім’єю.</p>
-        <p class="details__text">До зустрічі. За нашим столом. У нашій історії. 🤍</p>
-        <p class="details__text">Павло та Світлана</p>
+        <p class="details__text"><span data-guest-names></span>, до зустрічі. За нашим столом. У нашій історії. 🤍</p>
+        <p class="details__text">Павло & Світлана</p>
       </section>
 
       <button class="invite__button modal__next" id="download-button" type="button">Завантажити запрошення</button>

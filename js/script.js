@@ -22,6 +22,7 @@ const GUESTS = [
 ];
 const MIN_MATCH = 4;
 const STORAGE_KEY = 'guestIds';
+const FONT_STORAGE_KEY = 'font';
 const HTML2PDF_URLS = [
   'js/vendor/html2pdf.bundle.min.js',
   'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js',
@@ -34,6 +35,7 @@ const coupleCheckbox = document.getElementById('guest-couple');
 const modals = document.querySelectorAll('.modal');
 const mapBoxes = document.querySelectorAll('.details__map-box');
 const downloadButton = document.getElementById('download-button');
+const fontButtons = document.querySelectorAll('.fonts__button');
 let openedModal = null;
 let selectedGuest = null;
 
@@ -48,6 +50,19 @@ function guestGroup(guest) {
 
 const groupName = (guest) => guestGroup(guest).map(fullName).join(' та ');
 const selectedGuests = () => guestGroup(selectedGuest);
+const firstNames = () => selectedGuests().map((guest) => guest.firstName).join(' та ');
+
+// options: "пара|він|вона", форма для неї необов'язкова
+function pickForm(options) {
+  const guests = selectedGuests();
+  const variant = guests.length > 1 ? 0 : guests[0].gender === 'f' ? 2 : 1;
+  const [pair, male, female = male] = options.split('|');
+  return [pair, male, female][variant];
+}
+
+const fillText = (text) => text
+  .replaceAll('{names}', firstNames())
+  .replace(/\{([^{}]*\|[^{}]*)\}/g, (_, options) => pickForm(options));
 
 function saveGuests() {
   try {
@@ -65,15 +80,12 @@ function loadGuestIds() {
 
 function renderSelectedGuests() {
   guestInput.value = groupName(selectedGuest);
-  const firstNames = selectedGuests().map((guest) => guest.firstName).join(' та ');
   document.querySelectorAll('[data-guest-names]').forEach((el) => {
-    el.textContent = firstNames;
+    el.textContent = firstNames();
   });
 
-  const isSingle = selectedGuests().length === 1;
   document.querySelectorAll('[data-guest-word]').forEach((el) => {
-    const [plural, single] = el.dataset.guestWord.split('|');
-    el.textContent = isSingle ? single : plural;
+    el.textContent = pickForm(el.dataset.guestWord);
   });
   saveGuests();
 }
@@ -122,6 +134,24 @@ if (savedGuest) {
   selectGuest(savedGuest);
 }
 
+function selectFont(button) {
+  const root = document.documentElement.style;
+  root.setProperty('--font', button.dataset.font);
+  root.setProperty('--font-scale', button.dataset.scale);
+  fontButtons.forEach((el) => el.setAttribute('aria-pressed', el === button));
+  try {
+    localStorage.setItem(FONT_STORAGE_KEY, button.dataset.font);
+  } catch {}
+}
+
+fontButtons.forEach((button) => button.addEventListener('click', () => selectFont(button)));
+
+let savedFont = null;
+try {
+  savedFont = localStorage.getItem(FONT_STORAGE_KEY);
+} catch {}
+selectFont([...fontButtons].find((button) => button.dataset.font === savedFont) || fontButtons[0]);
+
 function loadScript(src) {
   return new Promise((resolve, reject) => {
     const script = document.createElement('script');
@@ -153,30 +183,17 @@ function createElement(tag, className, text) {
 }
 
 function buildInvitationPage() {
-  const guests = selectedGuests();
-  const names = guests.map((guest) => guest.firstName).join(' та ');
-  const variant = guests.length > 1 ? 0 : guests[0].gender === 'f' ? 2 : 1;
-  const fill = (text) => text
-    .replaceAll('{names}', names)
-    .replace(/\{([^{}]*\|[^{}]*)\}/g, (_, options) => {
-      const [pair, male, female = male] = options.split('|');
-      return [pair, male, female][variant];
-    });
   const page = createElement('div', 'pdf-page');
-
-  page.append(
-    createElement('p', 'pdf-page__subtitle', INVITATION_PDF.subtitle),
-    createElement('h1', 'pdf-page__title', fill(INVITATION_PDF.title)),
-  );
+  page.append(createElement('h1', 'pdf-page__title', fillText(INVITATION_PDF.title)));
 
   INVITATION_PDF.blocks.forEach((block) => {
     const section = createElement('section', 'pdf-page__block');
-    if (block.title) section.append(createElement('h2', 'pdf-page__block-title', fill(block.title)));
-    block.text.forEach((paragraph) => section.append(createElement('p', 'pdf-page__text', fill(paragraph))));
+    if (block.title) section.append(createElement('h2', 'pdf-page__block-title', fillText(block.title)));
+    block.text.forEach((paragraph) => section.append(createElement('p', 'pdf-page__text', fillText(paragraph))));
     page.append(section);
   });
 
-  page.append(createElement('p', 'pdf-page__signature', fill(INVITATION_PDF.signature)));
+  page.append(createElement('p', 'pdf-page__signature', fillText(INVITATION_PDF.signature)));
   return page;
 }
 
@@ -197,7 +214,7 @@ downloadButton.addEventListener('click', async () => {
     .save();
 
   try {
-    await Promise.all([loadHtml2pdf(), document.fonts.ready]);
+    await Promise.all([loadHtml2pdf(), document.fonts.load('20px "Great Vibes"', 'Павло')]);
     try {
       await savePdf(buildInvitationPage());
     } catch (error) {
