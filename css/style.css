@@ -224,12 +224,13 @@ body {
   cursor: pointer;
   transition: background-color 0.3s, box-shadow 0.2s;
 
-  &:hover:not(:disabled) {
+  &:hover:not(:disabled, [aria-disabled="true"]) {
     background-color: var(--muted);
     box-shadow: 0 8px 22px rgba(147, 98, 55, 0.45);
   }
 
-  &:disabled {
+  &:disabled,
+  &[aria-disabled="true"] {
     opacity: 0.5;
     cursor: not-allowed;
     box-shadow: none;
@@ -251,6 +252,10 @@ body {
 
   @media (min-width: 900px) {
     padding: 8px 16px;
+  }
+
+  &.is-shaking {
+    animation: shake 0.4s ease-in-out;
   }
 }
 
@@ -534,5 +539,17 @@ body {
 @keyframes spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes shake {
+  20%,
+  60% {
+    transform: translateX(-8px);
+  }
+
+  40%,
+  80% {
+    transform: translateX(8px);
   }
 }

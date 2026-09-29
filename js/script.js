@@ -95,7 +95,7 @@ function renderSelectedGuests() {
 function selectGuest(guest) {
   selectedGuest = guest;
   guestSuggestions.hidden = true;
-  inviteButton.disabled = false;
+  inviteButton.setAttribute('aria-disabled', 'false');
   renderSelectedGuests();
 }
 
@@ -120,7 +120,7 @@ function renderSuggestions() {
 
 guestInput.addEventListener('input', () => {
   selectedGuest = null;
-  inviteButton.disabled = true;
+  inviteButton.setAttribute('aria-disabled', 'true');
   renderSuggestions();
 });
 
@@ -294,7 +294,24 @@ function closeModal() {
   inviteButton.focus();
 }
 
-inviteButton.addEventListener('click', () => openModal(document.getElementById('about-modal')));
+// перезапускаємо анімацію, навіть якщо попередня ще не закінчилась
+function shakeGuestInput() {
+  guestInput.classList.remove('is-shaking');
+  void guestInput.offsetWidth;
+  guestInput.classList.add('is-shaking');
+  guestInput.focus();
+}
+
+guestInput.addEventListener('animationend', () => guestInput.classList.remove('is-shaking'));
+
+// кнопка без справжнього disabled, бо на задізейблену клік не приходить
+inviteButton.addEventListener('click', () => {
+  if (!selectedGuest) {
+    shakeGuestInput();
+    return;
+  }
+  openModal(document.getElementById('about-modal'));
+});
 
 modals.forEach((modal) => {
   modal.addEventListener('click', (event) => {
