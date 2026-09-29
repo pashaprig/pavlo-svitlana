@@ -66,13 +66,13 @@ const fillText = (text) => text
 
 function saveGuests() {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(selectedGuests().map((guest) => guest.id)));
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(selectedGuests().map((guest) => guest.id)));
   } catch {}
 }
 
 function loadGuestIds() {
   try {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+    return JSON.parse(sessionStorage.getItem(STORAGE_KEY)) || [];
   } catch {
     return [];
   }
@@ -197,32 +197,75 @@ function buildInvitationPage() {
   return page;
 }
 
+const DOWNLOAD_LABEL = downloadButton.textContent;
+// iOS не зберігає blob-файли через посилання, тому там віддаємо PDF у системне меню «Поділитися»
+const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
+  || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+let pendingPdf = null;
+
+const pdfWorker = (page) => html2pdf()
+  .set({
+    filename: INVITATION_PDF.fileName,
+    margin: 0,
+    image: { type: 'jpeg', quality: 0.95 },
+    html2canvas: { scale: 2, backgroundColor: '#f5f0e4' },
+    jsPDF: { unit: 'mm', format: 'a5', orientation: 'portrait' },
+  })
+  .from(page);
+
+async function createPdf(output) {
+  try {
+    return await output(pdfWorker(buildInvitationPage()));
+  } catch (error) {
+    console.warn('PDF з фоном не вдався, пробуємо без нього', error);
+    const page = buildInvitationPage();
+    page.classList.add('pdf-page--plain');
+    return output(pdfWorker(page));
+  }
+}
+
+// false — браузер не дав відкрити меню без нового натискання
+async function sharePdf(file) {
+  try {
+    await navigator.share({ files: [file] });
+  } catch (error) {
+    if (error.name === 'NotAllowedError') return false;
+  }
+  return true;
+}
+
+function resetPendingPdf() {
+  pendingPdf = null;
+  downloadButton.textContent = DOWNLOAD_LABEL;
+}
+
+guestInput.addEventListener('input', resetPendingPdf);
+coupleCheckbox.addEventListener('change', resetPendingPdf);
+
 downloadButton.addEventListener('click', async () => {
-  const label = downloadButton.textContent;
+  if (pendingPdf) {
+    if (await sharePdf(pendingPdf)) resetPendingPdf();
+    return;
+  }
+
   downloadButton.disabled = true;
   downloadButton.textContent = 'Готуємо запрошення…';
-
-  const savePdf = (page) => html2pdf()
-    .set({
-      filename: INVITATION_PDF.fileName,
-      margin: 0,
-      image: { type: 'jpeg', quality: 0.95 },
-      html2canvas: { scale: 2, backgroundColor: '#f5f0e4' },
-      jsPDF: { unit: 'mm', format: 'a5', orientation: 'portrait' },
-    })
-    .from(page)
-    .save();
+  let label = DOWNLOAD_LABEL;
 
   try {
     await Promise.all([loadHtml2pdf(), document.fonts.load('20px "Great Vibes"', 'Павло')]);
-    try {
-      await savePdf(buildInvitationPage());
-    } catch (error) {
-      console.warn('PDF з фоном не вдався, пробуємо без нього', error);
-      const page = buildInvitationPage();
-      page.classList.add('pdf-page--plain');
-      await savePdf(page);
+    if (isIOS && navigator.canShare) {
+      const blob = await createPdf((worker) => worker.outputPdf('blob'));
+      const file = new File([blob], INVITATION_PDF.fileName, { type: 'application/pdf' });
+      if (navigator.canShare({ files: [file] })) {
+        if (!(await sharePdf(file))) {
+          pendingPdf = file;
+          label = 'Зберегти PDF';
+        }
+        return;
+      }
     }
+    await createPdf((worker) => worker.save());
   } catch (error) {
     console.error(error);
     alert('Не вдалося створити запрошення. Спробуйте ще раз.');
