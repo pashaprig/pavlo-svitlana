@@ -255,7 +255,7 @@ body {
   }
 
   &.is-shaking {
-    animation: shake 1s ease-in-out;
+    animation: shake 0.2s ease-in-out 5;
   }
 }
 
@@ -543,13 +543,11 @@ body {
 }
 
 @keyframes shake {
-  20%,
-  60% {
+  25% {
     transform: translateX(-8px);
   }
 
-  40%,
-  80% {
+  75% {
     transform: translateX(8px);
   }
 }
