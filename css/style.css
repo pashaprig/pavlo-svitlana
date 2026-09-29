@@ -12,7 +12,6 @@
   --radius: 2px;
 
   --font: 'Montserrat', sans-serif;
-  --font-scale: 1;
   --font-pdf: 'Great Vibes', cursive;
 
   --screen: 100vh;
@@ -25,7 +24,6 @@
 body {
   margin: 0;
   font-family: var(--font);
-  font-size: calc(1rem * var(--font-scale));
   background-color: var(--bg);
   background-image:
     radial-gradient(circle at 0% 0%, rgba(147, 98, 55, 0.12), transparent 45%),
@@ -160,7 +158,7 @@ body {
   bottom: calc(16px + env(safe-area-inset-bottom));
   left: 16px;
   z-index: 1;
-  padding: 20px;
+  padding: 16px 12px;
   text-align: center;
   background-color: rgba(245, 240, 228, 0.55);
   -webkit-backdrop-filter: blur(6px);
@@ -184,34 +182,6 @@ body {
 
   @media (min-width: 900px) {
     font-size: 2.2em;
-  }
-}
-
-.fonts {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 6px;
-  margin-bottom: 14px;
-}
-
-.fonts__button {
-  padding: 4px 12px;
-  font-size: 0.95rem;
-  color: var(--text);
-  background-color: rgba(255, 255, 255, 0.6);
-  border: 1px solid var(--accent);
-  border-radius: 999px;
-  cursor: pointer;
-  transition: background-color 0.2s, color 0.2s;
-
-  &:hover {
-    background-color: rgba(147, 98, 55, 0.12);
-  }
-
-  &[aria-pressed='true'] {
-    color: var(--bg);
-    background-color: var(--accent);
   }
 }
 
@@ -468,7 +438,7 @@ body {
 
 .details__field {
   width: 100%;
-  padding: 10px 8px;
+  padding: 8px 6px;
   font: inherit;
   color: inherit;
   background-color: rgba(255, 255, 255, 0.6);
@@ -491,8 +461,10 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 16px;
+  /* трохи менше за A5 (559 × 793.2), інакше html2pdf додає порожній другий аркуш */
   width: 559px;
-  min-height: 793px;
+  height: 790px;
+  overflow: hidden;
   padding: 56px 52px;
   font-family: var(--font-pdf);
   font-size: 19px;
@@ -518,7 +490,7 @@ body {
 
 .pdf-page__title {
   margin: 0;
-  font-size: 52px;
+  font-size: 2.74em;
   font-weight: normal;
   line-height: 1.1;
 }
@@ -536,7 +508,7 @@ body {
 
 .pdf-page__block-title {
   margin: 0 0 4px;
-  font-size: 30px;
+  font-size: 1.58em;
   font-weight: normal;
   color: var(--muted);
 }
@@ -552,7 +524,7 @@ body {
 
 .pdf-page__signature {
   margin: auto 0 0;
-  font-size: 26px;
+  font-size: 1.37em;
   line-height: 1.3;
   white-space: pre-line;
   color: var(--muted);

@@ -1,6 +1,7 @@
 const GUESTS = [
-  { id: 1, lastName: 'Сайчук', firstName: 'Лєна', gender: 'f', partner: null },
-  { id: 2, lastName: 'Барська', firstName: 'Настя', gender: 'f', partner: 3 },
+  { id: 1, lastName: 'Сайчук', firstName: 'Лєна', gender: 'f', partner: 21 },
+  { id: 21, lastName: 'Сайчук', firstName: 'Женя', gender: 'm', partner: 1 },
+  { id: 2, lastName: 'Барська-Шульга', firstName: 'Настя', gender: 'f', partner: 3 },
   { id: 3, lastName: 'Шульга', firstName: 'Руслан', gender: 'm', partner: 2 },
   { id: 4, lastName: 'Васильєва', firstName: 'Оля', gender: 'f', partner: 5 },
   { id: 5, lastName: 'Васильєв', firstName: 'Антон', gender: 'm', partner: 4 },
@@ -17,12 +18,13 @@ const GUESTS = [
   { id: 16, lastName: 'Ткаченко', firstName: 'Настя', gender: 'f', partner: 17 },
   { id: 17, lastName: 'Ткаченко', firstName: 'Денис', gender: 'm', partner: 16 },
   { id: 18, lastName: 'Черненко', firstName: 'Стас', gender: 'm', partner: 19 },
-  { id: 19, lastName: 'Стаса', firstName: 'Таня', gender: 'f', partner: 18 },
+  { id: 19, lastName: 'Тарасенко', firstName: 'Таня', gender: 'f', partner: 18 },
   { id: 20, lastName: 'Горбачевська', firstName: 'Лєра', gender: 'f', partner: null },
+  { id: 22, lastName: 'Білозор', firstName: 'Іра', gender: 'f', partner: null },
 ];
 const MIN_MATCH = 4;
+const PDF_MIN_FONT_SIZE = 12;
 const STORAGE_KEY = 'guestIds';
-const FONT_STORAGE_KEY = 'font';
 const HTML2PDF_URLS = [
   'js/vendor/html2pdf.bundle.min.js',
   'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js',
@@ -35,7 +37,6 @@ const coupleCheckbox = document.getElementById('guest-couple');
 const modals = document.querySelectorAll('.modal');
 const mapBoxes = document.querySelectorAll('.details__map-box');
 const downloadButton = document.getElementById('download-button');
-const fontButtons = document.querySelectorAll('.fonts__button');
 let openedModal = null;
 let selectedGuest = null;
 
@@ -45,12 +46,14 @@ const findGuest = (id) => GUESTS.find((guest) => guest.id === id) || null;
 
 function guestGroup(guest) {
   const partner = coupleCheckbox.checked ? findGuest(guest.partner) : null;
-  return partner ? [guest, partner] : [guest];
+  if (!partner) return [guest];
+  return guest.gender === 'f' ? [guest, partner] : [partner, guest];
 }
 
 const groupName = (guest) => guestGroup(guest).map(fullName).join(' та ');
 const selectedGuests = () => guestGroup(selectedGuest);
-const firstNames = () => selectedGuests().map((guest) => guest.firstName).join(' та ');
+// нерозривні пробіли, щоб «Настя та Руслан» не розривалось на два рядки
+const firstNames = () => selectedGuests().map((guest) => guest.firstName).join(' та ');
 
 // options: "пара|він|вона", форма для неї необов'язкова
 function pickForm(options) {
@@ -134,24 +137,6 @@ if (savedGuest) {
   selectGuest(savedGuest);
 }
 
-function selectFont(button) {
-  const root = document.documentElement.style;
-  root.setProperty('--font', button.dataset.font);
-  root.setProperty('--font-scale', button.dataset.scale);
-  fontButtons.forEach((el) => el.setAttribute('aria-pressed', el === button));
-  try {
-    localStorage.setItem(FONT_STORAGE_KEY, button.dataset.font);
-  } catch {}
-}
-
-fontButtons.forEach((button) => button.addEventListener('click', () => selectFont(button)));
-
-let savedFont = null;
-try {
-  savedFont = localStorage.getItem(FONT_STORAGE_KEY);
-} catch {}
-selectFont([...fontButtons].find((button) => button.dataset.font === savedFont) || fontButtons[0]);
-
 function loadScript(src) {
   return new Promise((resolve, reject) => {
     const script = document.createElement('script');
@@ -194,13 +179,28 @@ function buildInvitationPage() {
   });
 
   page.append(createElement('p', 'pdf-page__signature', fillText(INVITATION_PDF.signature)));
+  return fitToPage(page);
+}
+
+// зменшуємо шрифт, доки все запрошення не вміститься на один аркуш
+function fitToPage(page) {
+  page.style.cssText = 'position: fixed; left: -10000px; top: 0;';
+  document.body.append(page);
+  let size = parseFloat(getComputedStyle(page).fontSize);
+  while (page.scrollHeight > page.clientHeight && size > PDF_MIN_FONT_SIZE) {
+    size -= 0.5;
+    page.style.fontSize = `${size}px`;
+  }
+  page.remove();
+  page.style.position = page.style.left = page.style.top = '';
   return page;
 }
 
 const DOWNLOAD_LABEL = downloadButton.textContent;
 // iOS не зберігає blob-файли через посилання, тому там віддаємо PDF у системне меню «Поділитися»
+// iPad видає себе за Mac, тож відрізняємо його від ноутбука за відсутністю миші/тачпада
 const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
-  || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  || (/Macintosh/.test(navigator.userAgent) && matchMedia('(hover: none) and (pointer: coarse)').matches);
 let pendingPdf = null;
 
 const pdfWorker = (page) => html2pdf()
@@ -253,7 +253,7 @@ downloadButton.addEventListener('click', async () => {
   let label = DOWNLOAD_LABEL;
 
   try {
-    await Promise.all([loadHtml2pdf(), document.fonts.load('20px "Great Vibes"', 'Павло')]);
+    await Promise.all([loadHtml2pdf(), document.fonts.load('20px "Great Vibes"', 'Світлана')]);
     if (isIOS && navigator.canShare) {
       const blob = await createPdf((worker) => worker.outputPdf('blob'));
       const file = new File([blob], INVITATION_PDF.fileName, { type: 'application/pdf' });
