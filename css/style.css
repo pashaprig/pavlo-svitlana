@@ -267,6 +267,10 @@ body {
   margin-bottom: 14px;
   cursor: pointer;
   user-select: none;
+
+  &[hidden] {
+    display: none;
+  }
 }
 
 .guest__checkbox {

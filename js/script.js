@@ -33,6 +33,7 @@ const inviteButton = document.getElementById('invite-button');
 const guestInput = document.getElementById('guest-input');
 const guestSuggestions = document.getElementById('guest-suggestions');
 const coupleCheckbox = document.getElementById('guest-couple');
+const coupleLabel = coupleCheckbox.closest('.guest__couple');
 const modals = document.querySelectorAll('.modal');
 const mapBoxes = document.querySelectorAll('.details__map-box');
 const downloadButton = document.getElementById('download-button');
@@ -92,10 +93,17 @@ function renderSelectedGuests() {
   saveGuests();
 }
 
+function updateCoupleVisibility(guest) {
+  const hasPartner = Boolean(guest && guest.partner);
+  coupleLabel.hidden = !hasPartner;
+  if (!hasPartner) coupleCheckbox.checked = false;
+}
+
 function selectGuest(guest) {
   selectedGuest = guest;
   guestSuggestions.hidden = true;
   inviteButton.setAttribute('aria-disabled', 'false');
+  updateCoupleVisibility(guest);
   renderSelectedGuests();
 }
 
@@ -121,6 +129,7 @@ function renderSuggestions() {
 guestInput.addEventListener('input', () => {
   selectedGuest = null;
   inviteButton.setAttribute('aria-disabled', 'true');
+  updateCoupleVisibility(null);
   renderSuggestions();
 });
 
