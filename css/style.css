@@ -401,6 +401,16 @@ body {
   border-image: linear-gradient(90deg, transparent, var(--accent), transparent) 1;
 }
 
+.details__palette {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 4px auto 16px;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  object-fit: contain;
+}
+
 .details__map-box {
   position: relative;
   height: 240px;
