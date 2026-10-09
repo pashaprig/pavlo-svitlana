@@ -25,6 +25,9 @@ const GUESTS = [
 const MIN_MATCH = 4;
 const PDF_MIN_FONT_SIZE = 12;
 const STORAGE_KEY = 'guestIds';
+// прізвище, яке відкриває запрошення без імен; підказок для нього немає
+const SECRET_LAST_NAME = 'пригарницька';
+const PDF_PAGE_WIDTH = 559;
 const HTML2PDF_URL = 'js/vendor/html2pdf.bundle.min.js';
 // шрифт PDF підвантажуємо лише під час створення запрошення, щоб не гальмувати сторінку
 const PDF_FONT_URL = 'https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap';
@@ -37,8 +40,13 @@ const coupleLabel = coupleCheckbox.closest('.guest__couple');
 const modals = document.querySelectorAll('.modal');
 const mapBoxes = document.querySelectorAll('.details__map-box');
 const downloadButton = document.getElementById('download-button');
+const previewModal = document.getElementById('preview-modal');
+const previewBox = document.getElementById('invitation-preview');
+const previewDownloadButton = document.getElementById('preview-download-button');
+const INVITE_LABEL = inviteButton.textContent;
 let openedModal = null;
 let selectedGuest = null;
+let isSecretGuest = false;
 
 const normalize = (text) => text.trim().toLowerCase().replace(/[’ʼ`]/g, "'");
 const fullName = (guest) => `${guest.lastName} ${guest.firstName}`;
@@ -128,7 +136,9 @@ function renderSuggestions() {
 
 guestInput.addEventListener('input', () => {
   selectedGuest = null;
-  inviteButton.setAttribute('aria-disabled', 'true');
+  isSecretGuest = normalize(guestInput.value) === SECRET_LAST_NAME;
+  inviteButton.setAttribute('aria-disabled', String(!isSecretGuest));
+  inviteButton.textContent = isSecretGuest ? 'Сформувати запрошення' : INVITE_LABEL;
   updateCoupleVisibility(null);
   renderSuggestions();
 });
@@ -175,20 +185,25 @@ function createElement(tag, className, text) {
   return el;
 }
 
-function buildInvitationPage() {
+function buildInvitationPage(content, fill) {
   const page = createElement('div', 'pdf-page');
-  page.append(createElement('h1', 'pdf-page__title', fillText(INVITATION_PDF.title)));
+  page.append(createElement('h1', 'pdf-page__title', fill(content.title)));
 
-  INVITATION_PDF.blocks.forEach((block) => {
+  content.blocks.forEach((block) => {
     const section = createElement('section', 'pdf-page__block');
-    if (block.title) section.append(createElement('h2', 'pdf-page__block-title', fillText(block.title)));
-    block.text.forEach((paragraph) => section.append(createElement('p', 'pdf-page__text', fillText(paragraph))));
+    if (block.title) section.append(createElement('h2', 'pdf-page__block-title', fill(block.title)));
+    block.text.forEach((paragraph) => section.append(createElement('p', 'pdf-page__text', fill(paragraph))));
     page.append(section);
   });
 
-  page.append(createElement('p', 'pdf-page__signature', fillText(INVITATION_PDF.signature)));
+  page.append(createElement('p', 'pdf-page__signature', fill(content.signature)));
   return fitToPage(page);
 }
+
+const buildGuestPage = () => buildInvitationPage(INVITATION_PDF, fillText);
+// текст той самий, лише звертання завжди на «ви» (перша форма з {вами|тобою})
+const fillGeneralText = (text) => text.replace(/\{([^{}]*\|[^{}]*)\}/g, (_, options) => options.split('|')[0]);
+const buildGeneralPage = () => buildInvitationPage(INVITATION_PDF_GENERAL, fillGeneralText);
 
 // зменшуємо шрифт, доки все запрошення не вміститься на один аркуш
 function fitToPage(page) {
@@ -204,31 +219,33 @@ function fitToPage(page) {
   return page;
 }
 
-const DOWNLOAD_LABEL = downloadButton.textContent;
 // iOS не зберігає blob-файли через посилання, тому там віддаємо PDF у системне меню «Поділитися»
 // iPad видає себе за Mac, тож відрізняємо його від ноутбука за відсутністю миші/тачпада
 const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
   || (/Macintosh/.test(navigator.userAgent) && matchMedia('(hover: none) and (pointer: coarse)').matches);
-let pendingPdf = null;
 
-const pdfWorker = (page) => html2pdf()
+const SCREEN_QUALITY = { scale: 2, jpeg: 0.95 };
+// A5 завширшки 148 мм: 559 px × 4 ≈ 384 DPI, із запасом над 300 DPI для друку
+const PRINT_QUALITY = { scale: 4, jpeg: 1 };
+
+const pdfWorker = (page, quality) => html2pdf()
   .set({
     filename: INVITATION_PDF.fileName,
     margin: 0,
-    image: { type: 'jpeg', quality: 0.95 },
-    html2canvas: { scale: 2, backgroundColor: '#f5f0e4' },
+    image: { type: 'jpeg', quality: quality.jpeg },
+    html2canvas: { scale: quality.scale, backgroundColor: '#f5f0e4' },
     jsPDF: { unit: 'mm', format: 'a5', orientation: 'portrait' },
   })
   .from(page);
 
-async function createPdf(output) {
+async function createPdf(buildPage, quality, output) {
   try {
-    return await output(pdfWorker(buildInvitationPage()));
+    return await output(pdfWorker(buildPage(), quality));
   } catch (error) {
     console.warn('PDF з фоном не вдався, пробуємо без нього', error);
-    const page = buildInvitationPage();
+    const page = buildPage();
     page.classList.add('pdf-page--plain');
-    return output(pdfWorker(page));
+    return output(pdfWorker(page, quality));
   }
 }
 
@@ -242,45 +259,74 @@ async function sharePdf(file) {
   return true;
 }
 
-function resetPendingPdf() {
-  pendingPdf = null;
-  downloadButton.textContent = DOWNLOAD_LABEL;
+function setupDownload(button, buildPage, quality) {
+  const downloadLabel = button.textContent;
+  let pendingPdf = null;
+
+  function resetPendingPdf() {
+    pendingPdf = null;
+    button.textContent = downloadLabel;
+  }
+
+  guestInput.addEventListener('input', resetPendingPdf);
+  coupleCheckbox.addEventListener('change', resetPendingPdf);
+
+  button.addEventListener('click', async () => {
+    if (pendingPdf) {
+      if (await sharePdf(pendingPdf)) resetPendingPdf();
+      return;
+    }
+
+    button.disabled = true;
+    button.textContent = 'Готуємо запрошення…';
+    let label = downloadLabel;
+
+    try {
+      await Promise.all([loadHtml2pdf(), loadPdfFont()]);
+      if (isIOS && navigator.canShare) {
+        const blob = await createPdf(buildPage, quality, (worker) => worker.outputPdf('blob'));
+        const file = new File([blob], INVITATION_PDF.fileName, { type: 'application/pdf' });
+        if (navigator.canShare({ files: [file] })) {
+          if (!(await sharePdf(file))) {
+            pendingPdf = file;
+            label = 'Зберегти PDF';
+          }
+          return;
+        }
+      }
+      await createPdf(buildPage, quality, (worker) => worker.save());
+    } catch (error) {
+      console.error(error);
+      alert('Не вдалося створити запрошення. Спробуйте ще раз.');
+    } finally {
+      button.disabled = false;
+      button.textContent = label;
+    }
+  });
 }
 
-guestInput.addEventListener('input', resetPendingPdf);
-coupleCheckbox.addEventListener('change', resetPendingPdf);
+setupDownload(downloadButton, buildGuestPage, SCREEN_QUALITY);
+setupDownload(previewDownloadButton, buildGeneralPage, PRINT_QUALITY);
 
-downloadButton.addEventListener('click', async () => {
-  if (pendingPdf) {
-    if (await sharePdf(pendingPdf)) resetPendingPdf();
-    return;
-  }
+// превʼю — та сама сторінка, що йде в PDF, лише зменшена під ширину екрана
+function scalePreview() {
+  previewBox.style.setProperty('--scale', Math.min(previewBox.clientWidth / PDF_PAGE_WIDTH, 1));
+}
 
-  downloadButton.disabled = true;
-  downloadButton.textContent = 'Готуємо запрошення…';
-  let label = DOWNLOAD_LABEL;
-
+async function openPreview() {
+  previewBox.replaceChildren();
+  openModal(previewModal);
+  scalePreview();
   try {
-    await Promise.all([loadHtml2pdf(), loadPdfFont()]);
-    if (isIOS && navigator.canShare) {
-      const blob = await createPdf((worker) => worker.outputPdf('blob'));
-      const file = new File([blob], INVITATION_PDF.fileName, { type: 'application/pdf' });
-      if (navigator.canShare({ files: [file] })) {
-        if (!(await sharePdf(file))) {
-          pendingPdf = file;
-          label = 'Зберегти PDF';
-        }
-        return;
-      }
-    }
-    await createPdf((worker) => worker.save());
+    await loadPdfFont();
   } catch (error) {
-    console.error(error);
-    alert('Не вдалося створити запрошення. Спробуйте ще раз.');
-  } finally {
-    downloadButton.disabled = false;
-    downloadButton.textContent = label;
+    console.warn(error);
   }
+  previewBox.replaceChildren(buildGeneralPage());
+}
+
+window.addEventListener('resize', () => {
+  if (openedModal === previewModal) scalePreview();
 });
 
 mapBoxes.forEach((mapBox) => {
@@ -315,6 +361,10 @@ guestInput.addEventListener('animationend', () => guestInput.classList.remove('i
 
 // кнопка без справжнього disabled, бо на задізейблену клік не приходить
 inviteButton.addEventListener('click', () => {
+  if (isSecretGuest) {
+    openPreview();
+    return;
+  }
   if (!selectedGuest) {
     shakeGuestInput();
     return;

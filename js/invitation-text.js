@@ -23,3 +23,9 @@ const INVITATION_PDF = {
   ],
   signature: '23 жовтня 2026\nСвітлана & Павло',
 };
+
+// запрошення без імен для гостя, який сам ввів секретне прізвище
+const INVITATION_PDF_GENERAL = {
+  ...INVITATION_PDF,
+  title: 'Запрошення',
+};
